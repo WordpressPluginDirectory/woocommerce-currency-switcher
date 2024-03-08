@@ -238,7 +238,7 @@ $options = array(
                     <div class="wcf-control-section">
 
                         <div id="woocs_tools_panel">
-
+							<input type="hidden" name="woocs_currency_nonce" value="<?php echo wp_create_nonce('currency_nonce'); ?>" >
                             <div class="woocs-options-float-left">
 
                                 <a href="#" id="woocs_add_currency" class="woocs-panel-button dashicons-before dashicons-plus"><?php esc_html_e("Add Currency", 'woocommerce-currency-switcher') ?></a>

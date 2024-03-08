@@ -122,11 +122,13 @@ jQuery(function ($) {
         jQuery(this).parents('tr').find("input[name='woocs_rate_plus[]']").val('');
         //instant save
         var currency_name = jQuery(this).parents('tr').find('input[name="woocs_name[]"]').val();
+	var currency_nonce =jQuery('input[name="woocs_currency_nonce"]').val(); 
         if (currency_name.length) {
             woocs_show_stat_info_popup(woocs_lang.loading + ' ...');
             var data = {
                 action: "woocs_save_etalon",
-                currency_name: currency_name
+                currency_name: currency_name,
+		currency_nonce
             };
             jQuery.post(ajaxurl, data, function (request) {
                 try {

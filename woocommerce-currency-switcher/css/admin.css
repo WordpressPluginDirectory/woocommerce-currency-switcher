@@ -168,3 +168,23 @@ a.woocs_flag{
 select.woocs_geoip_profile{
     margin-bottom: 5px;
 }
+input#woocs_toogle_update_order:checked{
+    color:red;
+}
+.woocs_toogle_update_order_hidden{
+    display:none;
+}
+input#woocs_toogle_update_order:checked ~ .woocs_toogle_update_order_hidden{
+    display: block;
+}
+.woocs_update_order_rate_container{
+    margin-top: 30px;
+}
+.woocs_update_order_rate_container p{
+    margin: 10px;
+}
+.woocs_update_order_rate_container label{
+    font-weight: bold;
+    font-style: italic;
+    cursor: pointer;
+}

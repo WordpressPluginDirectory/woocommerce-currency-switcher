@@ -103,7 +103,7 @@ class WOOCS_SD_DD {
                     this.remember(element);
                 },
                 aftersetup: (wrap, elem) => {
-                    if (this.settings.width_p100) {
+                    if (parseInt(this.settings.width_p100)) {
                         wrap.style.display = 'none';
                     }
                 }

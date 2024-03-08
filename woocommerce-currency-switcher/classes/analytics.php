@@ -14,13 +14,17 @@ class WOOCS_analytics {
     public function __construct() {
         //coupons
         add_action('woocommerce_analytics_update_coupon', array($this, 'convert_coupons'), 12, 2);
-        //products
+		
+        //products 
+		//wp-content\plugins\woocommerce\src\Admin\API\Reports\Products\DataStore.php::sync_order_products
         add_action('woocommerce_analytics_update_product', array($this, 'convert_products'), 12, 2);
         //tax
         add_action('woocommerce_analytics_update_tax', array($this, 'convert_tax'), 12, 2);
     }
-
-    public function convert_tax($tax_rate_id, $order_id) {
+	public function update_order_analytics_data($order_id){
+		ProductsDataStore::sync_order_products($order_id);
+	}
+	public function convert_tax($tax_rate_id, $order_id) {
         global $wpdb;
         global $WOOCS;
         $decimal = 2;

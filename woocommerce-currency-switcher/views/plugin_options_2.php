@@ -31,8 +31,8 @@ global $WOOCS;
                     </svg>
                 </span></h3>
             <i><?php printf(esc_html__('Actualized for WooCommerce v.%s.x', 'woocommerce-currency-switcher'), $this->actualized_for) ?></i>
-        
-        
+
+
             <?php if ($WOOCS->notes_for_free): ?>
                 <a href="https://codecanyon.pluginus.net/item/woocommerce-currency-switcher/8085217" style="position: absolute;
                    right: 0;
@@ -47,10 +47,10 @@ global $WOOCS;
                    line-height: 29px;
                    "target="_blank" class="woocs__button"><span class="dashicons dashicons-money"></span>&nbsp;Get PRO</a>
                <?php endif; ?>
-        
-        
-        
-        
+
+
+
+
         </div>
 
         <div id="tabs" class="woocs__tabs">
@@ -140,183 +140,183 @@ global $WOOCS;
 
                 <div id="woocs-tabs-1" class="woocs__tab-pane woocs-show woocs-active">
                     <div class="woocs__tab-content">
+                        <input type="hidden" name="woocs_currency_nonce" value="<?php echo wp_create_nonce('currency_nonce'); ?>" >
+                            <div class="woocs__tools-panel">
+                                <div class="woocs__options">
+                                    <a href="javascript: void(0)" id="woocs_add_currency" data-action="prepend" class="woocs__button"><span class="icon-plus"></span><?php esc_html_e("Prepend Currency", 'woocommerce-currency-switcher') ?></a>
+                                    <a href="javascript: woocs_update_all_rates(); void(0);" class="woocs__button"><span class="icon-arrows-cw"></span><?php esc_html_e("Update all rates", 'woocommerce-currency-switcher') ?></a>
+                                    <a href="javascript: woocs_add_money_sign2(); void(0);" class="woocs__button"><span class="icon-plus"></span><?php esc_html_e("Add custom currency symbols", 'woocommerce-currency-switcher') ?></a>
 
-                        <div class="woocs__tools-panel">
-                            <div class="woocs__options">
-                                <a href="javascript: void(0)" id="woocs_add_currency" data-action="prepend" class="woocs__button"><span class="icon-plus"></span><?php esc_html_e("Prepend Currency", 'woocommerce-currency-switcher') ?></a>
-                                <a href="javascript: woocs_update_all_rates(); void(0);" class="woocs__button"><span class="icon-arrows-cw"></span><?php esc_html_e("Update all rates", 'woocommerce-currency-switcher') ?></a>
-                                <a href="javascript: woocs_add_money_sign2(); void(0);" class="woocs__button"><span class="icon-plus"></span><?php esc_html_e("Add custom currency symbols", 'woocommerce-currency-switcher') ?></a>
+                                    <a href="javascript: void(0)" id="woocs_add_currencies" class="woocs__button"><span class="dashicons dashicons-money"></span>&nbsp;<?php esc_html_e("Currency Wizard", 'woocommerce-currency-switcher') ?></a>
+                                </div>
 
-                                <a href="javascript: void(0)" id="woocs_add_currencies" class="woocs__button"><span class="dashicons dashicons-money"></span>&nbsp;<?php esc_html_e("Currency Wizard", 'woocommerce-currency-switcher') ?></a>
+                                <div class="woocs_drop_down_view_panel">
+                                    <?php
+                                    $opts = array(
+                                        'no' => esc_html__('Not styled drop-down', 'woocommerce-currency-switcher'),
+                                        'style-1' => esc_html__('Style #1', 'woocommerce-currency-switcher'),
+                                        'style-2' => esc_html__('Style #2', 'woocommerce-currency-switcher'),
+                                        'style-3' => esc_html__('Style #3', 'woocommerce-currency-switcher'),
+                                        'flags' => esc_html__('Flags (as images)', 'woocommerce-currency-switcher'),
+                                        //+++
+                                        'ddslick' => esc_html__('ddslick drop-down', 'woocommerce-currency-switcher'),
+                                        'chosen' => esc_html__('Chosen drop-down', 'woocommerce-currency-switcher'),
+                                        'chosen_dark' => esc_html__('Chosen dark drop-down', 'woocommerce-currency-switcher'),
+                                        'wselect' => esc_html__('wSelect drop-down', 'woocommerce-currency-switcher')
+                                    );
+
+                                    $selected = trim(get_option('woocs_drop_down_view', 'ddslick'));
+                                    ?>
+
+                                    <label for="woocs_drop_down_view" class="woocs-options-valign-top"><?php woocs_draw_tooltip(esc_html__('How to display currency switcher (by default) on the site front. (NEW) Make your attention on skins with numbers - you can use them on the same page with different designs in shortcode [woocs] described in its attribute style and style number (see Codex page in Info Help tab)!', 'woocommerce-currency-switcher')) ?></label>
+
+                                    <select name="woocs_drop_down_view" id="woocs_drop_down_view" class="chosen_select woocs-options-fix1">
+                                        <?php foreach ($opts as $key => $value) : ?>
+                                            <option value="<?= $key ?>" <?php selected($key === $selected) ?>><?= $value ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="woocs_drop_down_view_panel">
-                                <?php
-                                $opts = array(
-                                    'no' => esc_html__('Not styled drop-down', 'woocommerce-currency-switcher'),
-                                    'style-1' => esc_html__('Style #1', 'woocommerce-currency-switcher'),
-                                    'style-2' => esc_html__('Style #2', 'woocommerce-currency-switcher'),
-                                    'style-3' => esc_html__('Style #3', 'woocommerce-currency-switcher'),
-                                    'flags' => esc_html__('Flags (as images)', 'woocommerce-currency-switcher'),
-                                    //+++
-                                    'ddslick' => esc_html__('ddslick drop-down', 'woocommerce-currency-switcher'),
-                                    'chosen' => esc_html__('Chosen drop-down', 'woocommerce-currency-switcher'),
-                                    'chosen_dark' => esc_html__('Chosen dark drop-down', 'woocommerce-currency-switcher'),
-                                    'wselect' => esc_html__('wSelect drop-down', 'woocommerce-currency-switcher')
-                                );
-
-                                $selected = trim(get_option('woocs_drop_down_view', 'ddslick'));
-                                ?>
-
-                                <label for="woocs_drop_down_view" class="woocs-options-valign-top"><?php woocs_draw_tooltip(esc_html__('How to display currency switcher (by default) on the site front. (NEW) Make your attention on skins with numbers - you can use them on the same page with different designs in shortcode [woocs] described in its attribute style and style number (see Codex page in Info Help tab)!', 'woocommerce-currency-switcher')) ?></label>
-
-                                <select name="woocs_drop_down_view" id="woocs_drop_down_view" class="chosen_select woocs-options-fix1">
-                                    <?php foreach ($opts as $key => $value) : ?>
-                                        <option value="<?= $key ?>" <?php selected($key === $selected) ?>><?= $value ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="woocs_settings_hide">
+                                <template id="woocs_item_tpl"><?php
+                                    $empty = array(
+                                        'name' => '',
+                                        'rate' => 0,
+                                        'symbol' => '',
+                                        'position' => '',
+                                        'is_etalon' => 0,
+                                        'description' => '',
+                                        'hide_cents' => 0
+                                    );
+                                    woocs_print_currency($this, $empty);
+                                    ?>
+                                </template>
                             </div>
-                        </div>
 
-                        <div class="woocs_settings_hide">
-                            <template id="woocs_item_tpl"><?php
-                                $empty = array(
-                                    'name' => '',
-                                    'rate' => 0,
-                                    'symbol' => '',
-                                    'position' => '',
-                                    'is_etalon' => 0,
-                                    'description' => '',
-                                    'hide_cents' => 0
-                                );
-                                woocs_print_currency($this, $empty);
-                                ?>
-                            </template>
-                        </div>
+                            <div class="scrollbar-external_wrapper">
+                                <div class="scrollbar-external">
+                                    <div id="woocs-currencies-options">
+                                        <table class="woocs__table woocs__data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th><?php echo esc_html__('Basic', 'woocommerce-currency-switcher') ?></th>
+                                                    <th><?php echo esc_html__('Move', 'woocommerce-currency-switcher') ?></th>
 
-                        <div class="scrollbar-external_wrapper">
-                            <div class="scrollbar-external">
-                                <div id="woocs-currencies-options">
-                                    <table class="woocs__table woocs__data-table">
-                                        <thead>
-                                            <tr>
-                                                <th><?php echo esc_html__('Basic', 'woocommerce-currency-switcher') ?></th>
-                                                <th><?php echo esc_html__('Move', 'woocommerce-currency-switcher') ?></th>
+                                                    <th><span class="icon-flag" title="<?php echo esc_html__('Flag', 'woocommerce-currency-switcher') ?>"></span></th>
+                                                    <th><span class="icon-money" title="<?php echo esc_html__('Currency', 'woocommerce-currency-switcher') ?>"></span></th>
+                                                    <th><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67c0-.84.79-1.43 2.1-1.43c1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81c0 1.79 1.49 2.69 3.66 3.21c1.95.46 2.34 1.15 2.34 1.87c0 .53-.39 1.39-2.1 1.39c-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77c-.01-2.2-1.9-2.96-3.66-3.42z" fill="currentColor"/></svg></th>
+                                                    <th><?php echo esc_html__('Position', 'woocommerce-currency-switcher') ?></th>
+                                                    <th><?php echo esc_html__('Rate+%', 'woocommerce-currency-switcher') ?></th>
+                                                    <th class="woocs_align_left"><?php echo esc_html__('Decimal', 'woocommerce-currency-switcher') ?></th>
 
-                                                <th><span class="icon-flag" title="<?php echo esc_html__('Flag', 'woocommerce-currency-switcher') ?>"></span></th>
-                                                <th><span class="icon-money" title="<?php echo esc_html__('Currency', 'woocommerce-currency-switcher') ?>"></span></th>
-                                                <th><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67c0-.84.79-1.43 2.1-1.43c1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81c0 1.79 1.49 2.69 3.66 3.21c1.95.46 2.34 1.15 2.34 1.87c0 .53-.39 1.39-2.1 1.39c-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77c-.01-2.2-1.9-2.96-3.66-3.42z" fill="currentColor"/></svg></th>
-                                                <th><?php echo esc_html__('Position', 'woocommerce-currency-switcher') ?></th>
-                                                <th><?php echo esc_html__('Rate+%', 'woocommerce-currency-switcher') ?></th>
-                                                <th class="woocs_align_left"><?php echo esc_html__('Decimal', 'woocommerce-currency-switcher') ?></th>
+                                                    <th class="woocs_align_left"><?php echo esc_html__('Separators', 'woocommerce-currency-switcher') ?></th>
 
-                                                <th class="woocs_align_left"><?php echo esc_html__('Separators', 'woocommerce-currency-switcher') ?></th>
+                                                    <th><?php echo esc_html__('Visible', 'woocommerce-currency-switcher') ?></th>
+                                                    <th><?php echo esc_html__('Cents', 'woocommerce-currency-switcher') ?></th>
+                                                    <th><?php echo esc_html__('Description', 'woocommerce-currency-switcher') ?></th>
+                                                    <th>X</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="woocs_list">
 
-                                                <th><?php echo esc_html__('Visible', 'woocommerce-currency-switcher') ?></th>
-                                                <th><?php echo esc_html__('Cents', 'woocommerce-currency-switcher') ?></th>
-                                                <th><?php echo esc_html__('Description', 'woocommerce-currency-switcher') ?></th>
-                                                <th>X</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="woocs_list">
-
-                                            <?php
-                                            if (!empty($currencies) AND is_array($currencies)) {
-                                                foreach ($currencies as $key => $currency) {
-                                                    woocs_print_currency($this, $currency);
+                                                <?php
+                                                if (!empty($currencies) AND is_array($currencies)) {
+                                                    foreach ($currencies as $key => $currency) {
+                                                        woocs_print_currency($this, $currency);
+                                                    }
                                                 }
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="external-scroll_wrapper">
-                            <div class="external-scroll_x">
-                                <div class="scroll-element_outer">
-                                    <div class="scroll-element_size"></div>
-                                    <div class="scroll-element_track"></div>
-                                    <div class="scroll-bar"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="woocs_settings_codes woocs__options">
-                            <a href="javascript: void(0)" id="woocs_add_currency2" data-action="append" class="woocs__button"><span class="icon-plus"></span><?php esc_html_e("Append Currency", 'woocommerce-currency-switcher') ?></a>
-                            &nbsp;<a href="http://en.wikipedia.org/wiki/ISO_4217#Active_codes" target="_blank" class="woocs__button">
-                                <?php esc_html_e("Read wiki about Currency Active codes  <-  Get right currencies codes here if you are not sure about it!", 'woocommerce-currency-switcher') ?>
-                            </a>
-                        </div>
-
-                        <div id="woocs_currencies_modal" class="woocs_modal2" style="display: none;" >
-
-                            <div class="woot-modal">
-                                <div class="woot-modal-inner">
-                                    <div class="woot-modal-inner-header">
-                                        <h3 class="woot-modal-title"></h3>
-                                        <div class="woot-modal-title-info"></div>
-                                        <a href="javascript: void(0);" class="woot-modal-close"></a>
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="woot-modal-inner-content">
-                                        <div class="woot-form-element-container">
+                                </div>
+
+                            </div>
+
+                            <div class="external-scroll_wrapper">
+                                <div class="external-scroll_x">
+                                    <div class="scroll-element_outer">
+                                        <div class="scroll-element_size"></div>
+                                        <div class="scroll-element_track"></div>
+                                        <div class="scroll-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="woocs_settings_codes woocs__options">
+                                <a href="javascript: void(0)" id="woocs_add_currency2" data-action="append" class="woocs__button"><span class="icon-plus"></span><?php esc_html_e("Append Currency", 'woocommerce-currency-switcher') ?></a>
+                                &nbsp;<a href="http://en.wikipedia.org/wiki/ISO_4217#Active_codes" target="_blank" class="woocs__button">
+                                    <?php esc_html_e("Read wiki about Currency Active codes  <-  Get right currencies codes here if you are not sure about it!", 'woocommerce-currency-switcher') ?>
+                                </a>
+                            </div>
+
+                            <div id="woocs_currencies_modal" class="woocs_modal2" style="display: none;" >
+
+                                <div class="woot-modal">
+                                    <div class="woot-modal-inner">
+                                        <div class="woot-modal-inner-header">
+                                            <h3 class="woot-modal-title"></h3>
+                                            <div class="woot-modal-title-info"></div>
+                                            <a href="javascript: void(0);" class="woot-modal-close"></a>
+                                        </div>
+                                        <div class="woot-modal-inner-content">
+                                            <div class="woot-form-element-container">
 
 
-                                            <?php if (!$WOOCS->notes_for_free): ?>
-                                                <div class="woocs_modal_options2">
+                                                <?php if (!$WOOCS->notes_for_free): ?>
+                                                    <div class="woocs_modal_options2">
+
+                                                        <div class="woocs__alert woocs__alert-info">
+                                                            <p>
+                                                                <?php esc_html_e("Install your own set of selected currencies in one click! Also you can install from here only one selected currency. Remember: if you not found currency you need here - you can always add it by hands using Prepend/Append Currency button! If you do not like preselected currency symbols you can always add your own in tab Options.", 'woocommerce-currency-switcher') ?>
+                                                            </p>
+                                                        </div>
+
+
+                                                        <select multiple="" class="chosen_select">
+                                                            <?php
+                                                            $currency_keys = array_keys($currencies);
+
+                                                            foreach ($WOOCS->world_currencies->get_currencies_title() as $c_code => $c_value) {
+                                                                ?>
+                                                                <?php
+                                                                $c_disabled = "";
+                                                                if (in_array($c_code, $currency_keys)) {
+                                                                    $c_disabled = 'disabled="disabled"';
+                                                                }
+                                                                ?>
+                                                                <option <?php echo esc_html($c_disabled); ?> value="<?php echo esc_attr($c_code); ?>"><?php echo esc_html($c_value); ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <div>
+                                                            <a href="javascript: void(0);" class="woocs__button woocs_add_currencies"><span class="icon-dollar"></span><?php esc_html_e("Install selected currencies", 'woocommerce-currency-switcher') ?></a>
+                                                            <div id="woocs_currencies_modal_data">
+                                                                <?php ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                <?php else: ?>
 
                                                     <div class="woocs__alert woocs__alert-info">
                                                         <p>
-                                                            <?php esc_html_e("Install your own set of selected currencies in one click! Also you can install from here only one selected currency. Remember: if you not found currency you need here - you can always add it by hands using Prepend/Append Currency button! If you do not like preselected currency symbols you can always add your own in tab Options.", 'woocommerce-currency-switcher') ?>
+                                                            <?php esc_html_e("Install your own set of selected currencies in one click. Disabled in free version as has no sense because of 2 currencies limitation.", 'woocommerce-currency-switcher') ?>
                                                         </p>
                                                     </div>
 
-
-                                                    <select multiple="" class="chosen_select">
-                                                        <?php
-                                                        $currency_keys = array_keys($currencies);
-
-                                                        foreach ($WOOCS->world_currencies->get_currencies_title() as $c_code => $c_value) {
-                                                            ?>
-                                                            <?php
-                                                            $c_disabled = "";
-                                                            if (in_array($c_code, $currency_keys)) {
-                                                                $c_disabled = 'disabled="disabled"';
-                                                            }
-                                                            ?>
-                                                            <option <?php echo esc_html($c_disabled); ?> value="<?php echo esc_attr($c_code); ?>"><?php echo esc_html($c_value); ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                    <div>
-                                                        <a href="javascript: void(0);" class="woocs__button woocs_add_currencies"><span class="icon-dollar"></span><?php esc_html_e("Install selected currencies", 'woocommerce-currency-switcher') ?></a>
-                                                        <div id="woocs_currencies_modal_data">
-                                                            <?php ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            <?php else: ?>
-
-                                                <div class="woocs__alert woocs__alert-info">
-                                                    <p>
-                                                        <?php esc_html_e("Install your own set of selected currencies in one click. Disabled in free version as has no sense because of 2 currencies limitation.", 'woocommerce-currency-switcher') ?>
-                                                    </p>
-                                                </div>
-
-                                            <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="woot-modal-inner-footer">
+                                            <a href="javascript: void(0);" class="woot-btn woot-modal-close woocs__button">Close</a>
                                         </div>
                                     </div>
-                                    <div class="woot-modal-inner-footer">
-                                        <a href="javascript: void(0);" class="woot-btn woot-modal-close woocs__button">Close</a>
-                                    </div>
                                 </div>
+
+                                <div class="woot-modal-backdrop"></div>
+
                             </div>
-
-                            <div class="woot-modal-backdrop"></div>
-
-                        </div>
 
 
                     </div>
@@ -1736,6 +1736,19 @@ global $WOOCS;
 
                                                                     </div>
 
+
+                                                                    <div class="woocs-card-item">
+
+                                                                        <div class="woocs-card woocs-transition woocs-text-center woocs-rounded" style="cursor: pointer" onclick="window.open('https://chat.openai.com/', '_blank')">
+                                                                            <div class="woocs-card-body">
+                                                                                <img src="<?php echo WOOCS_LINK ?>img/chat-gpt.jpg" class="woocs-avatar woocs-avatar-small woocs-mb-3" alt="">
+                                                                                    <h5 class="woocs-h5"><a href="https://chat.openai.com/" class="woocs-text-dark" target="_blank"><?php esc_html_e('Chat GPT', 'woocommerce-currency-switcher'); ?></a></h5>
+                                                                                    <p><?php esc_html_e('You can try to ask chat GPT about how to use this plugin. Use former name of the plugin WOOCS.', 'woocommerce-currency-switcher'); ?></p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
                                                                 </div>
 
                                                                 <div class="woocs-row">
@@ -1861,21 +1874,21 @@ global $WOOCS;
                                                     </div>
 
                                                     <div id="tab-smart-designer" class="woocs__tab-pane woocs_settings_section">
-														
+
                                                         <div class="woocs__tab-content">
 
                                                             <div id="woocs-sd-manage-area">
 
                                                                 <div class="woocs__tools-panel">
                                                                     <h5><?php esc_html_e("Smart Designer", 'woocommerce-currency-switcher') ?></h5>
-																	<input type="hidden" name="woocs_wpnonce_sd" value="<?php echo wp_create_nonce('woocs_wpnonce_sd'); ?>" >
+                                                                    <input type="hidden" name="woocs_wpnonce_sd" value="<?php echo wp_create_nonce('woocs_wpnonce_sd'); ?>" >
                                                                 </div>
 
 
                                                                 <div style="padding: 10px;">
                                                                     <div class="woocs__alert woocs__alert-success"><?php esc_html_e("In this section you can create your own view of currency drop-down switcher", 'woocommerce-currency-switcher'); ?></div>
 
-																	
+
                                                                     <a href="#" id="woocs-sd-create" class="woocs__button dashicons-before dashicons-plus"><?php esc_html_e("Create", 'woocommerce-currency-switcher') ?></a><br />
 
 
@@ -1963,8 +1976,8 @@ global $WOOCS;
                                                                     <div><a href="javascript: woocs_sd_save_exit();void(0);" class="woocs-panel-button dashicons-before dashicons-cloud-saved dashicons-exit"><?php esc_html_e("Save and exit", 'woocommerce-currency-switcher') ?></a>&nbsp;</div>
                                                                     <div><a href="javascript: woocs_sd_exit_no_save();void(0);" class="woocs-panel-button dashicons-before dashicons-exit"><?php esc_html_e("Exit without save", 'woocommerce-currency-switcher') ?></a>&nbsp;</div>
                                                                     <div><a href="javascript: woocs_sd_reset();void(0);" class="woocs-panel-button dashicons-before dashicons-dismiss"><?php esc_html_e("Reset to default", 'woocommerce-currency-switcher') ?></a>&nbsp;</div>
-																	
-																</div>
+
+                                                                </div>
                                                             </template>
 
 

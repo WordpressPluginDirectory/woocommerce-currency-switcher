@@ -1,14 +1,14 @@
 === FOX - Currency Switcher Professional for WooCommerce ===
 Contributors: RealMag777
 Donate link: https://pluginus.net/affiliate/woocommerce-currency-switcher
-Tags: woocommerce, currency, switcher, currency switcher, converter, user role, role based pricing
+Tags: woocommerce, currency, switcher, currency switcher, converter
 Requires at least: 4.9.0
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 1.4.1.7
+Stable tag: 1.4.1.8
 
 
-FOX - Currency Switcher Professional for WooCommerce (former name is WOOCS) is free currency plugin for woocommerce and multi currency shop that allows to switch products prices and pay in the selected currency
+FOX - Currency Switcher Professional for WooCommerce (former name is WOOCS) is currency plugin for woocommerce and multi currency shop, switch & pay
 
 == Description ==
 
@@ -61,11 +61,7 @@ Also the plugin has ajaxed shortcode/widget of [currency converter](https://demo
 
 &#9989;&nbsp;**Currencies visibility**: possibility to set currencies as Public or as Private. In private mode currency not published in switchers and user cannot set it by link through '?currency=XXX'
 
-&#9989;&nbsp;**Light video to understand basics**:
-
-
-
-Note: for today design of the plugin is different of the video (is improved), see screenshots below!
+&#9989;&nbsp;You can **ask help to chatGPT** about the plugin using the plugin former name WOOCS, example: "How to use [[woocs]] shortcode?"
 
 &#9989;&nbsp;**Payments rules**: rules to hide/show payment gates on the checkout page depending on the current currency
 
@@ -118,6 +114,8 @@ Note: for today design of the plugin is different of the video (is improved), se
 &#9989;&nbsp;**Wide API**: For site developer - advanced [API functionality set](https://currency-switcher.com/codex/) which allows to manipulate with prices and their rates on the fly using conditional logic
 
 &#9989;&nbsp;**Easy to use for administrators and shop customers**: install, set settings for couple of minutes and let your shop make more money!
+
+&#9989;&nbsp;**FOX is chatGPT friendly plugin** you can ask help to chat gpt about the plugin features using the plugin former name WOOCS, example: "How to use [woocs] shortcode?"
 
 &#9989;&nbsp;Compatible with [WPML](https://wpml.org/plugin/woocommerce-currency-switcher/)
 
@@ -186,6 +184,10 @@ R: [FAQ](https://currency-switcher.com/faq/)
 
 
 == Changelog ==
+
+= 1.4.1.8 =
+* 1 security issue fixed thanks to Dhabaleshwar Das from patchstack.com
+* new feature - [https://share.pluginus.net/image/i20240306171529.png](https://share.pluginus.net/image/i20240306171529.png) you can update order rates, the data in the analytics table is also updated
 
 = 1.4.1.7 =
 * 1 security issue fixed thanks to Lucio Sá from wordfence.com

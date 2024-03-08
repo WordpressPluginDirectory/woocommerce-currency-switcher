@@ -4,7 +4,6 @@ if (!defined('ABSPATH'))
 global $WOOCS;
 $currencies = apply_filters('woocs_currency_manipulation_before_show', $WOOCS->get_currencies());
 ?>
-<img src=""/>
 
 <?php ob_start() ?> 
 .woocs_auto_switcher.cd-stretchy-nav.nav-is-visible ul a.woocs_curr_curr {
