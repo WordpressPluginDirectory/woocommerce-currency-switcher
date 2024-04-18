@@ -5,7 +5,7 @@
   Plugin URI: https://currency-switcher.com/
   Description: Currency Switcher for WooCommerce that allows to the visitors and customers on your woocommerce store site switch currencies and optionally apply selected currency on checkout
   Author: realmag777
-  Version: 1.4.1.8
+  Version: 1.4.1.9
   Requires at least: WP 4.9.0
   Tested up to: WP 6.5
   Requires PHP: 7.2
@@ -14,7 +14,7 @@
   Forum URI: https://pluginus.net/support/forum/woocs-woocommerce-currency-switcher-multi-currency-and-multi-pay-for-woocommerce/
   Author URI: https://pluginus.net/
   WC requires at least: 6.0
-  WC tested up to: 8.6
+  WC tested up to: 8.7
  */
 
 if (!defined('ABSPATH')) {
@@ -64,7 +64,7 @@ if (defined('DOING_AJAX')) {
     }
 }
 
-define('WOOCS_VERSION', '1.4.1.8');
+define('WOOCS_VERSION', '1.4.1.9');
 //define('WOOCS_VERSION', uniqid('woocs-'));
 define('WOOCS_MIN_WOOCOMMERCE', '6.0');
 define('WOOCS_PATH', plugin_dir_path(__FILE__));
@@ -88,7 +88,7 @@ include_once WOOCS_PATH . 'classes/woocs_hpos.php';
 
 include_once WOOCS_PATH . 'classes/world_currencies.php';
 
-//07-03-2024
+//17-04-2024
 class WOOCS_STARTER {
 
     private $default_woo_version = 6.0;
@@ -119,7 +119,10 @@ class WOOCS_STARTER {
 
         if (count($this->disable_plugin) AND !is_admin() AND (isset($_SERVER['SCRIPT_URI']) || isset($_SERVER['REQUEST_URI']))) {
             $exclude = false;
-            $url = $_SERVER['SCRIPT_URI'];
+            $url = false;
+            if (isset($_SERVER['SCRIPT_URI'])) {
+                $url = $_SERVER['SCRIPT_URI'];
+            }
 
             if (!$url) {
                 $url = explode('?', $_SERVER['REQUEST_URI']);

@@ -517,9 +517,13 @@ final class WOOCS {
         // marketing alert
         add_action('init', array($this, 'init_marketig_woocs'));
 
-        //arder func
+        //order func
 
         add_action('manage_posts_extra_tablenav', array($this, 'manage_posts_extra_tablenav'), 10, 1);
+
+        //my acount orders
+        add_action('woocommerce_my_account_my_orders_column_order-total', array($this, 'override_my_account_orders'), 777);
+        add_action('woocommerce_view_order', array($this, 'override_my_account_order'), 7);
 
         //add_filter( 'wc_get_price_thousand_separator', array($this, 'override_thousand_sep'));
         //add_filter( 'wc_get_price_decimal_separator', array($this, 'override_decimal_sep'));
@@ -628,6 +632,7 @@ final class WOOCS {
                 }
             }
         }
+
 //+++
         if ($this->storage->is_isset('woocs_current_currency')) {
             $this->current_currency = $this->storage->get_val('woocs_current_currency');
@@ -1245,13 +1250,19 @@ final class WOOCS {
         if ($this->shop_is_cached_preloader) {
             wp_add_inline_style('woocommerce-currency-switcher', $this->add_css());
         }
+
         //+++
         //if customer paying pending order from the front
         //checkout/order-pay/1044/?pay_for_order=true&key=order_55b764a4b7990
         if (isset($_GET['pay_for_order']) AND is_checkout_pay_page()) {
             if ($_GET['pay_for_order'] == 'true' AND isset($_GET['key'])) {
                 $order_id = wc_get_order_id_by_order_key($_GET['key']);
-                $currency = get_post_meta($order_id, '_order_currency', TRUE);
+                $order = wc_get_order($order_id);
+                if (!$order) {
+                    $currency = get_post_meta($order_id, '_order_currency', TRUE);
+                } else {
+                    $currency = $order->get_currency();
+                }
                 $this->set_currency($currency);
             }
         }
@@ -1369,6 +1380,7 @@ final class WOOCS {
     }
 
     public function woocommerce_checkout_update_order_review() {
+
         if (!get_option('woocs_is_multiple_allowed', 0)) {
             $this->reset_currency();
         }
@@ -1693,8 +1705,8 @@ final class WOOCS {
 
     public function get_woocommerce_currency() {
 
-        if (function_exists('has_block') && has_block('woocommerce/checkout')) {
-            $this->current_currency = 'EUR';
+        if (function_exists('has_block') && has_block('woocommerce/checkout') && !$this->is_multiple_allowed) {
+            $this->reset_currency();
         }
 
         return $this->current_currency;
@@ -4151,7 +4163,12 @@ final class WOOCS {
 
 //ajax
     public function woocs_rates_current_currency() {
-        wp_die(do_shortcode('[woocs_rates exclude="' . $this->escape($_REQUEST['exclude']) . '" precision="' . $this->escape($_REQUEST['precision']) . '" current_currency="' . $this->escape($_REQUEST['current_currency']) . '"]'));
+        $currencies = $this->get_currencies();
+        $currency = sanitize_text_field($_REQUEST['current_currency']);
+        if (!isset($currencies[$currency])) {
+            $currency = $this->default_currency;
+        }
+        wp_die(do_shortcode('[woocs_rates exclude="' . esc_attr($_REQUEST['exclude']) . '" precision="' . (int) $_REQUEST['precision'] . '" current_currency="' . esc_attr($currency) . '"]'));
     }
 
     public function wc_price($price, $convert = true, $args = array(), $product = NULL, $decimals = -1) {
@@ -4370,7 +4387,8 @@ final class WOOCS {
 //wp-content\plugins\woocommerce\includes\shipping\free-shipping\class-wc-shipping-free-shipping.php #192
     public function woocommerce_shipping_free_shipping_is_available($is_available, $package, $this_shipping = null) {
         global $woocommerce;
-        $currencies = $this->get_currencies(); {
+        $currencies = $this->get_currencies();
+        {
             $has_coupon = false;
             $has_met_min_amount = false;
 
@@ -6342,75 +6360,100 @@ final class WOOCS {
                 }
             <?php echo html_entity_decode('&lt;/script&gt;'); ?>
             </div>
-                <?php
-            });
-        }
+            <?php
+        });
+    }
 
-        public function get_admin_theme_id() {
-            //return intval(get_option('woocs_admin_theme_id', 0));
-            return 1;
-        }
+    public function get_admin_theme_id() {
+        //return intval(get_option('woocs_admin_theme_id', 0));
+        return 1;
+    }
 
-        public function woocs_order_page_adapt_coupon_new($item_id, $item, $order_id) {
-            if (wp_doing_ajax() && isset($_POST['action']) && 'woocommerce_add_coupon_discount' == $_POST['action']) {
-                $currencies = $this->get_currencies();
-                $order = wc_get_order($order_id);
-                $_order_currency = $order->get_currency();
-                if (isset($currencies[$_order_currency])) {
-                    $this->set_currency($_order_currency);
-                }
+    public function woocs_order_page_adapt_coupon_new($item_id, $item, $order_id) {
+        if (wp_doing_ajax() && isset($_POST['action']) && 'woocommerce_add_coupon_discount' == $_POST['action']) {
+            $currencies = $this->get_currencies();
+            $order = wc_get_order($order_id);
+            $_order_currency = $order->get_currency();
+            if (isset($currencies[$_order_currency])) {
+                $this->set_currency($_order_currency);
             }
-        }
-
-        public function woocs_order_page_adapt_coupon($classname, $order_type, $order_id) {
-
-            if (wp_doing_ajax() && isset($_POST['action']) && 'woocommerce_add_coupon_discount' == $_POST['action']) {
-
-                $currencies = $this->get_currencies();
-                //hpos
-                $order = wc_get_order($order_id);
-                // $_order_currency = $order->get_currency();
-                //$order_rate = $order->get_meta('_woocs_order_rate', true);
-                // $_order_currency = get_post_meta($order_id, '_order_currency', true);
-                // $order_rate = get_post_meta($order_id, '_woocs_order_rate', true);
-                //if (isset($currencies[$_order_currency])) {
-                //  $this->set_currency($_order_currency);
-                //  }
-            }
-            return $classname;
-        }
-
-        public function write_log($message) {
-            $path = WOOCS_PATH . 'woocs.log';
-            $data_log = date("Y-m-d H:i:s") . " - " . $message . PHP_EOL;
-            file_put_contents($path, $data_log, FILE_APPEND);
-        }
-
-        /**
-         * currency switching on the order editing page
-         * @param type WC_Order $order
-         */
-        public function order_edit_form_tag($order) {
-            $currency = $order->get_currency();
-            if (!empty($currency)) {
-                $_REQUEST['woocs_in_order_currency'] = $currency;
-                $this->current_currency = $currency;
-            }
-        }
-
-        /**
-         * currency switching in the order list
-         * 
-         * @param string $buyer
-         * @param WC_Order $order
-         * @return string   $buyer Buyer name.
-         */
-        public function woocommerce_admin_order_buyer_name($buyer, $order) {
-            $currency = $order->get_currency();
-            if (!empty($currency)) {
-                $this->current_currency = $currency;
-            }
-            return $buyer;
         }
     }
-    
+
+    public function woocs_order_page_adapt_coupon($classname, $order_type, $order_id) {
+
+        if (wp_doing_ajax() && isset($_POST['action']) && 'woocommerce_add_coupon_discount' == $_POST['action']) {
+
+            $currencies = $this->get_currencies();
+            //hpos
+            $order = wc_get_order($order_id);
+            // $_order_currency = $order->get_currency();
+            //$order_rate = $order->get_meta('_woocs_order_rate', true);
+            // $_order_currency = get_post_meta($order_id, '_order_currency', true);
+            // $order_rate = get_post_meta($order_id, '_woocs_order_rate', true);
+            //if (isset($currencies[$_order_currency])) {
+            //  $this->set_currency($_order_currency);
+            //  }
+        }
+        return $classname;
+    }
+
+    public function write_log($message) {
+        $path = WOOCS_PATH . 'woocs.log';
+        $data_log = date("Y-m-d H:i:s") . " - " . $message . PHP_EOL;
+        file_put_contents($path, $data_log, FILE_APPEND);
+    }
+
+    /**
+     * currency switching on the order editing page
+     * @param type WC_Order $order
+     */
+    public function order_edit_form_tag($order) {
+        $currency = $order->get_currency();
+        if (!empty($currency)) {
+            $_REQUEST['woocs_in_order_currency'] = $currency;
+            $this->current_currency = $currency;
+        }
+    }
+
+    /**
+     * currency switching in the order list
+     * 
+     * @param string $buyer
+     * @param WC_Order $order
+     * @return string   $buyer Buyer name.
+     */
+    public function woocommerce_admin_order_buyer_name($buyer, $order) {
+        $currency = $order->get_currency();
+        if (!empty($currency)) {
+            $this->current_currency = $currency;
+        }
+        return $buyer;
+    }
+
+    public function override_my_account_orders($order) {
+        if ($order) {
+
+            $currency = $order->get_currency();
+
+            if (!empty($currency)) {
+                $this->current_currency = $currency;
+            }
+        }
+        $item_count = $order->get_item_count() - $order->get_item_count_refunded();
+        echo wp_kses_post(sprintf(_n('%1$s for %2$s item', '%1$s for %2$s items', $item_count, 'woocommerce'), $order->get_formatted_order_total(), $item_count));
+    }
+
+    public function override_my_account_order($order_id) {
+
+        $order = wc_get_order($order_id);
+        if ($order) {
+
+            $currency = $order->get_currency();
+
+            if (!empty($currency)) {
+                $this->current_currency = $currency;
+            }
+        }
+    }
+}

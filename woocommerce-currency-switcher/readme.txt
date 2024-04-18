@@ -5,7 +5,7 @@ Tags: woocommerce, currency, switcher, currency switcher, converter
 Requires at least: 4.9.0
 Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 1.4.1.8
+Stable tag: 1.4.1.9
 
 
 FOX - Currency Switcher Professional for WooCommerce (former name is WOOCS) is currency plugin for woocommerce and multi currency shop, switch & pay
@@ -184,6 +184,9 @@ R: [FAQ](https://currency-switcher.com/faq/)
 
 
 == Changelog ==
+
+= 1.4.1.9 =
+* 1 security issue fixed thanks to stealthcopter from Wordfence
 
 = 1.4.1.8 =
 * 1 security issue fixed thanks to Dhabaleshwar Das from patchstack.com
