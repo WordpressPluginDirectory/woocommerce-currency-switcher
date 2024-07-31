@@ -45,7 +45,7 @@ final class WOOCS_FIXED_USER_ROLE extends WOOCS_FIXED_AMOUNT {
             $data['type'] = 'simple';
             $data['user_role_data'] = $this->get_product_user_role_data($post->ID);
 
-            echo $this->render_html(WOOCS_PATH . 'views/fixed/product_user_role_data.php', $data);
+            $this->render_html_e(WOOCS_PATH . 'views/fixed/product_user_role_data.php', $data);
         }
     }
 
@@ -63,7 +63,7 @@ final class WOOCS_FIXED_USER_ROLE extends WOOCS_FIXED_AMOUNT {
         $data['post_id'] = $variation->ID;
         $data['type'] = 'var';
         $data['user_role_data'] = $this->get_product_user_role_data($variation->ID);
-        echo $this->render_html(WOOCS_PATH . 'views/fixed/product_user_role_data.php', $data);
+        $this->render_html_e(WOOCS_PATH . 'views/fixed/product_user_role_data.php', $data);
     }
 
     //saving data for variable product

@@ -42,7 +42,7 @@ if (!isset($precision)) {
                         continue;
                     }
                     ?>
-                    <option <?php selected($current_currency, $key) ?> value="<?php echo esc_attr($key) ?>"><?php printf(esc_html__('1 %s is', 'woocommerce-currency-switcher'), $c['name']) ?></option>
+                    <option <?php selected($current_currency, $key) ?> value="<?php echo esc_attr($key) ?>"><?php printf(esc_html__('1 %s is', 'woocommerce-currency-switcher'), esc_html($c['name'])) ?></option>
                     <?php
                 }
             }

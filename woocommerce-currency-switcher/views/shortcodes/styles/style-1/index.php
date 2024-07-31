@@ -67,19 +67,19 @@ if ($show_flags) {
     ?>
 
     <div class="woocs-style-1-select">
-        <span><?= $options[$this->current_currency] ?></span>
-        <i class="fa2 fa-chevron-left2"><img src="<?php echo WOOCS_LINK ?>img/arrow-right.png" width="16" alt="" /></i>
+        <span><?= esc_html($options[$this->current_currency]) ?></span>
+        <i class="fa2 fa-chevron-left2"><img src="<?php echo esc_attr(WOOCS_LINK) ?>img/arrow-right.png" width="16" alt="" /></i>
     </div>
     <ul class="woocs-style-1-dropdown-menu">
         <?php foreach ($options as $key => $value) : ?>
             <?php if ($key === $this->current_currency AND ! $this->shop_is_cached) continue; ?>
-            <li data-currency="<?php echo $key ?>" data-flag="<?php echo (isset($all_currencies[$key]['flag']) ? $all_currencies[$key]['flag'] : '') ?>" style="<?php
+            <li data-currency="<?php echo esc_attr($key) ?>" data-flag="<?php echo esc_attr((isset($all_currencies[$key]['flag']) ? $all_currencies[$key]['flag'] : '')) ?>" style="<?php
             if (isset($flags_data[$key])) {
-                echo $flags_data[$key];
+                echo wp_kses_post($flags_data[$key]);
             }
-            ?>"><?= $value ?></li>
+            ?>"><?= esc_html($value) ?></li>
             <?php endforeach; ?>
     </ul>
 
-    <div class="woocs_display_none">FOX v.<?php echo WOOCS_VERSION ?></div>
+    <div class="woocs_display_none">FOX v.<?php echo esc_html(WOOCS_VERSION) ?></div>
 </div>

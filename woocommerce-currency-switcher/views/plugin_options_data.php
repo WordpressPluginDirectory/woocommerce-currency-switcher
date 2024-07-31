@@ -67,6 +67,25 @@ $woocs_is_payments_rule_enable = get_option('woocs_payments_rule_enabled', 0);
 
 //+++
 
+function get_allowed_html_switcher23() {
+	
+	$allowed_html = wp_kses_allowed_html('post');
+
+	$allowed_html['input'] = array(
+		'type' => true,
+		'name' => true,
+		'value' => true,
+		'checked' => true,
+		'class' => true,
+		'id' => true,
+		'n' => true,
+		'data-inversion' => true,
+		'data-event' => true
+	);
+	
+	return $allowed_html;
+}
+
 function draw_switcher23($name, $is_checked, $event = '', $label_title = '', $inversion = false) {
     $id = uniqid();
     $checked = 'n';
@@ -131,4 +150,13 @@ function draw_select($data, $selected = '', $name = '', $id = '') {
     </select>
     <?php
     return ob_get_clean();
+}
+function draw_select_e($data, $selected = '', $name = '', $id = '') {
+    ?>
+    <select class="woocs-form-select woocs-form-control" name="<?php echo esc_attr($name) ?>" <?php if (!empty($id)): ?>id="<?php echo esc_attr($id) ?>"<?php endif; ?>>
+        <?php foreach ($data as $key => $value) : ?>
+            <option value="<?php echo esc_attr($key) ?>" <?php if ($selected === $key): ?>selected=""<?php endif; ?>><?php echo esc_html($value) ?></option>
+        <?php endforeach; ?>
+    </select>
+    <?php
 }

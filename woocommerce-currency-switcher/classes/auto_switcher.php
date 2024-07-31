@@ -47,7 +47,7 @@ final class WOOCS_AUTO_SWITCHER {
 
     public function draw_html() {
         if ($this->show) {
-            echo $this->render_html(WOOCS_PATH . 'views/auto_switcher/' . $this->data['skin'] . '.php', $this->data);
+            $this->render_html_e(WOOCS_PATH . 'views/auto_switcher/' . $this->data['skin'] . '.php', $this->data);
         }
     }
 
@@ -57,10 +57,10 @@ final class WOOCS_AUTO_SWITCHER {
         $values = array(
             $currency['name'],
             $currency['symbol'],
-            "<img class='flag_auto_switcher' src='{$currency['flag']}' alt='{$currency['name']}' />&nbsp",
+            "<img class='flag_auto_switcher' src='{$currency['flag']}' alt='{$currency['name']}' /> ",
             $currency['description'],
         );
-        $string = str_replace($patt_array, $values, str_replace(' ', '&nbsp;', $string));
+        $string = str_replace($patt_array, $values, str_replace(' ', ' ', $string));
         if (empty($string)) {
             $string = $currency['name'];
         }
@@ -140,5 +140,12 @@ final class WOOCS_AUTO_SWITCHER {
         include($pagepath);
         return ob_get_clean();
     }
+    public function render_html_e($pagepath, $data = array()) {
+        if (isset($data['pagepath'])) {
+            unset($data['pagepath']);
+        }
+        @extract($data);
+        include($pagepath);
+    }	
 
 }

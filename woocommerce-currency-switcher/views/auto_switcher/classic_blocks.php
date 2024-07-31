@@ -6,31 +6,31 @@ $currencies = apply_filters('woocs_currency_manipulation_before_show', $WOOCS->g
 ?>
 <?php ob_start() ?> 
 .woocs_auto_switcher {
-top: <?php echo $top ?>;
+top: <?php echo esc_attr($top) ?>;
 } 
 .woocs_auto_switcher li a {
-background:<?php echo $color ?>;
+background:<?php echo esc_attr($color) ?>;
 }
 .woocs_auto_switcher li a.woocs_curr_curr {
-background:<?php echo $hover_color ?>;
+background:<?php echo esc_attr($hover_color) ?>;
 }
 .woocs_auto_switcher li  a:hover {
-background:<?php echo $hover_color ?>;
+background:<?php echo esc_attr($hover_color) ?>;
 }
 .woocs_auto_switcher li  a span {
-background:<?php echo $hover_color ?>;
+background:<?php echo esc_attr($hover_color) ?>;
 }
 .woocs_auto_switcher.left li span:after {
-border-right: 10px solid <?php echo $hover_color ?>;
+border-right: 10px solid <?php echo esc_attr($hover_color) ?>;
 }
 .woocs_auto_switcher.right li a span:after {
-border-left: 10px solid <?php echo $hover_color ?>;
+border-left: 10px solid <?php echo esc_attr($hover_color) ?>;
 }
 <?php
 $data = ob_get_clean();
 wp_add_inline_style('woocommerce-currency-switcher', $data);
 ?>           
-<ul class='woocs_auto_switcher <?php echo $side ?>' data-view="classic_blocks">
+<ul class='woocs_auto_switcher <?php echo esc_attr($side) ?>' data-view="classic_blocks">
     <?php
     foreach ($currencies as $key => $item):
         
@@ -46,8 +46,13 @@ wp_add_inline_style('woocommerce-currency-switcher', $data);
         $add_text = $this->prepare_field_text($item, $add_field);
         ?>  
         <li>
-            <a data-currency="<?php echo $key ?>" class="  <?php echo $current ?> woocs_auto_switcher_link" href="#"><?php echo $base_text ?> 
-                <span><div ><?php echo $add_text ?></div></span>
+            <a data-currency="<?php echo esc_html($key) ?>" class="  <?php echo esc_attr($current) ?> woocs_auto_switcher_link" href="#">
+				<?php echo wp_kses_post($base_text) ?> 
+                <span>
+					<div>
+						<?php echo wp_kses_post($add_text) ?>
+					</div>
+				</span>
             </a> 
         </li>
     <?php endforeach; ?>

@@ -12,19 +12,20 @@
  * MIT license - https://en.wikipedia.org/wiki/MIT_License .Basically that
  * means you are free to use Selectron23 as long as this header is left intact.
  */
-
+//10-07-2024
 'use strict';
-
 class Selectron23 {
     constructor(element, data = {}) {
         this.data = data;
 
         this.scale = 1;
-        Selectron23.z_index = 9999;
+        Selectron23.z_index = 9999;        
 
         this.el = document.createElement('div');
         this.el.className = 'selectron23';
         this.element = element;
+        this.element.style.zIndex = Selectron23.z_index;
+
         if (this.element.tagName.toLowerCase() === 'select') {
             this.element.insertAdjacentElement('afterend', this.el);
         } else {
@@ -312,7 +313,7 @@ class Selectron23 {
                 return;
             }
 
-            this.container.style.zIndex = ++Selectron23.z_index;//to avoid css issue with anothers selectron23 drop-downs
+            this.element.style.zIndex = this.container.style.zIndex = ++Selectron23.z_index;//to avoid css issue with anothers selectron23 drop-downs
 
             //animation
             let counter = 1;
@@ -362,12 +363,12 @@ class Selectron23 {
     }
 
     _normalize_min_height() {
-	
-	let curr_height = this.container.querySelector('div').clientHeight;
-	
-	if (curr_height == 0) {
-	    curr_height = 35;
-	}
+
+        let curr_height = this.container.querySelector('div').clientHeight;
+
+        if (curr_height == 0) {
+            curr_height = 35;
+        }
         this.container.style.minHeight = curr_height + 'px';
 
         this.el.style.height = (parseInt(this.container.style.minHeight) + 1) + 'px';//!!

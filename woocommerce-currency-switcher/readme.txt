@@ -3,10 +3,11 @@ Contributors: RealMag777
 Donate link: https://pluginus.net/affiliate/woocommerce-currency-switcher
 Tags: woocommerce, currency, switcher, currency switcher, converter
 Requires at least: 4.9.0
-Tested up to: 6.5
-Requires PHP: 7.2
-Stable tag: 1.4.1.9
-
+Tested up to: 6.6
+Requires PHP: 7.4
+Stable tag: 1.4.2.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 FOX - Currency Switcher Professional for WooCommerce (former name is WOOCS) is currency plugin for woocommerce and multi currency shop, switch & pay
 
@@ -16,17 +17,17 @@ FOX - Currency Switcher Professional for WooCommerce (former name is WOOCS) is c
 
 FOX is woo currency tool and available as shortcode **[[woocs]](https://currency-switcher.com/shortcode/woocs/)** so as the widget.
 
-List of supported currencies: [https://en.wikipedia.org/wiki/ISO_4217#Active_codes](https://en.wikipedia.org/wiki/ISO_4217#Active_codes)
+List of supported currencies: [🗺 https://en.wikipedia.org/wiki/ISO_4217#Active_codes](https://en.wikipedia.org/wiki/ISO_4217#Active_codes)
 
-**Briefly this plugin has next features**: Checkout with selected currency, different GeoIP rules, different Fixed prices rules and amounts rules, Prices based on User Role, [Prices based on Country](https://currency-switcher.com/woocommerce-price-based-on-country/), Payments rules, [API](https://currency-switcher.com/codex/).
+**Briefly this plugin has next features**: 🛒 Checkout with selected currency, 🗺 different GeoIP rules, 📈 different Fixed prices rules and amounts rules, 👥 Prices based on User Role, [🌍 Prices based on Country](https://currency-switcher.com/woocommerce-price-based-on-country/), 🛂 Payments rules, [📚 API](https://currency-switcher.com/codex/).
 
 
 
-* [Demo](https://demo.currency-switcher.com/)
+* [🌐 Demo](https://demo.currency-switcher.com/)
 
-* [FAQ](https://currency-switcher.com/faq/)
+* [❓ FAQ](https://currency-switcher.com/faq/)
 
-* [API](https://currency-switcher.com/codex/)
+* [📚 API](https://currency-switcher.com/codex/)
 
 
 
@@ -35,101 +36,101 @@ Latest PHP 8.x.x – COMPATIBLE!
 
 ### FOX Currency Switcher Features:
 
-&#9989;&nbsp;**Representation:** Currency Switcher is available as a widget and works in any widgetized area, for flexibility the shortcode is also available [[woocs]](https://currency-switcher.com/shortcode/woocs/).  You can insert shortcode [woocs] in any place of your site, [even in the top menu](https://currency-switcher.com/how-to-drop-woocommerce-currency-switcher-in-menu/).
+🏞&nbsp;**Representation:** Currency Switcher is available as a widget and works in any widgetized area, for flexibility the shortcode is also available [[woocs]](https://currency-switcher.com/shortcode/woocs/).  You can insert shortcode [woocs] in any place of your site, [even in the top menu](https://currency-switcher.com/how-to-drop-woocommerce-currency-switcher-in-menu/).
 
 Also the plugin has ajaxed shortcode/widget of [currency converter](https://demo.currency-switcher.com/shortcode-woocs_converter/) and ajaxed shortcode/widget of [currency rates](https://demo.currency-switcher.com/shortcode-woocs_rates/)
 
-&#9989;&nbsp;**Design**: graphically Currency Switcher can be represented in 3 different ways: drop-down, flags, [side switcher](https://demo.currency-switcher.com/). For each currency it is possible to set flag. Also it is possible using in-built Smart Designer to create your own customized currency drop-down!
+🎨&nbsp;**Design**: graphically Currency Switcher can be represented in 3 different ways: drop-down, flags, [side switcher](https://demo.currency-switcher.com/). For each currency it is possible to set flag. Also it is possible using in-built Smart Designer to create your own customized currency drop-down!
 
-&#9989;&nbsp;**Checkout**: the customers are allowed to pay in their selected(preferred) currency. This feature has name 'Is multiple allowed' and should be enabled in the plugin settings.
+🛒&nbsp;**Checkout**: the customers are allowed to pay in their selected(preferred) currency. This feature has name 'Is multiple allowed' and should be enabled in the plugin settings.
 
-&#9989;&nbsp;**Rates**: More than 7 currencies aggregators for automatic rates changing. Also admin can set rates manually if it's necessary! Optionally admin can be noticed about currency rates changes by email.
+🌍&nbsp;**Rates**: More than 7 currencies aggregators for automatic rates changing. Also admin can set rates manually if it's necessary! Optionally admin can be noticed about currency rates changes by email.
 
-&#9989;&nbsp;**Rates auto update**: update currency rates hourly, twice daily, daily, weekly, monthly, each 5 minutes,  each 15 minutes,  each 30 minutes,  each 45 minutes. Or you can disable it and set your own currency rates by hands!
+🔄&nbsp;**Rates auto update**: update currency rates hourly, twice daily, daily, weekly, monthly, each 5 minutes,  each 15 minutes,  each 30 minutes,  each 45 minutes. Or you can disable it and set your own currency rates by hands!
 
-&#9989;&nbsp;**Price**: set price format which fit your needs - decimals count, usual money sign or custom sign, money sign position (4 variants). You can show or hide cents for each currency optionally. For each currency you can set its own count of decimals after comma, so BTC is not the problem for this plugin
+💵&nbsp;**Price**: set price format which fit your needs - decimals count, usual money sign or custom sign, money sign position (4 variants). You can show or hide cents for each currency optionally. For each currency you can set its own count of decimals after comma, so BTC is not the problem for this plugin
 
-&#9989;&nbsp;**Custom money signs**: create and use your own money symbols you need. It is possible even use currency which not exists in the reality!
+💰&nbsp;**Custom money signs**: create and use your own money symbols you need. It is possible even use currency which not exists in the reality!
 
-&#9989;&nbsp;**Custom price formats**: each currency can has its own format where price and money sign can be set on the side you want
+💲&nbsp;**Custom price formats**: each currency can has its own format where price and money sign can be set on the side you want
 
-&#9989;&nbsp;**Price thousand and decimal separator**: Set price separators depending of the currency or any business logic (for example country) using hooks [woocs_price_thousand_sep](https://currency-switcher.com/hook/woocs_price_thousand_sep/) and [woocs_price_decimal_sep](https://currency-switcher.com/hook/woocs_price_decimal_sep/)
+💹&nbsp;**Price thousand and decimal separator**: Set price separators depending of the currency or any business logic (for example country) using hooks [woocs_price_thousand_sep](https://currency-switcher.com/hook/woocs_price_thousand_sep/) and [woocs_price_decimal_sep](https://currency-switcher.com/hook/woocs_price_decimal_sep/)
 
-&#9989;&nbsp;**Smart Designer**: [Allows to create multi currency drop-down switcher](https://currency-switcher.com/how-to-customize-currency-switcher-view/) using convenient dashboard. You can create unlimited count of drop-downs designs for different places of your site and even insert them directly into the site code.
+🚀&nbsp;**Smart Designer**: [Allows to create multi currency drop-down switcher](https://currency-switcher.com/how-to-customize-currency-switcher-view/) using convenient dashboard. You can create unlimited count of drop-downs designs for different places of your site and even insert them directly into the site code.
 
-&#9989;&nbsp;**Statistic**: collect currencies switching statistic for business purposes. No any private data of customers collects, only currency, country and time of switching. Also statistic for orders currencies is there.
+📊&nbsp;**Statistic**: collect currencies switching statistic for business purposes. No any private data of customers collects, only currency, country and time of switching. Also statistic for orders currencies is there.
 
-&#9989;&nbsp;**Currencies visibility**: possibility to set currencies as Public or as Private. In private mode currency not published in switchers and user cannot set it by link through '?currency=XXX'
+🔒&nbsp;**Currencies visibility**: possibility to set currencies as Public or as Private. In private mode currency not published in switchers and user cannot set it by link through '?currency=XXX'
 
-&#9989;&nbsp;You can **ask help to chatGPT** about the plugin using the plugin former name WOOCS, example: "How to use [[woocs]] shortcode?"
+🤖&nbsp;You can **ask help to chatGPT** about the plugin using the plugin former name WOOCS, example: "How to use [[woocs]] shortcode?"
 
-&#9989;&nbsp;**Payments rules**: rules to hide/show payment gates on the checkout page depending on the current currency
+🛂&nbsp;**Payments rules**: rules to hide/show payment gates on the checkout page depending on the current currency
 
-&#9989;&nbsp;**Welcome currency**: allows to set any price currency you want for your site visitors first visit. So if your shop currency is INR and you want let your customers on their first visit see prices converted to USD you just need to set 'Welcome currency' in FOX options.
+🎁&nbsp;**Welcome currency**: allows to set any price currency you want for your site visitors first visit. So if your shop currency is INR and you want let your customers on their first visit see prices converted to USD you just need to set 'Welcome currency' in FOX options.
 
-&#9989;&nbsp;**Individual prices based on User Role**: gives ability to set different prices for each user role in basic currency. Very power feature for your shop customers with loyalty program
+👥&nbsp;**Individual prices based on User Role**: gives ability to set different prices for each user role in basic currency. Very power feature for your shop customers with loyalty program
 
-&#9989;&nbsp;**Individual GeoIP rules for each product**:   super feature which allows for different countries show different prices in different currencies! This functionality allows to realize [WooCommerce Price Based on Country](https://currency-switcher.com/woocommerce-price-based-on-country/) functionality
+🌍&nbsp;**Individual GeoIP rules for each product**:   super feature which allows for different countries show different prices in different currencies! This functionality allows to realize [WooCommerce Price Based on Country](https://currency-switcher.com/woocommerce-price-based-on-country/) functionality
 
-&#9989;&nbsp;**Individual fixed prices rules for each product**: feature which allows for each product set fixed price for each currency, in this case for the product will not be applied conversion by rate, [watch video](https://currency-switcher.com/video-tutorials#video_PZugTH80-Eo)
+📈&nbsp;**Individual fixed prices rules for each product**: feature which allows for each product set fixed price for each currency, in this case for the product will not be applied conversion by rate, [watch video](https://currency-switcher.com/video-tutorials#video_PZugTH80-Eo)
 
-&#9989;&nbsp;**GEO IP rules for visitors local currency detection**: this feature is more targeted and allows to set currency of prices for the site visitors in their native currency when they visited the shop for the first time. Currency changes automatically according to the visitor IP, and even more - if to enable option '**Checkout by GeoIP rules**' your customers always will buy products in their local currency!
+🗺&nbsp;**GEO IP rules for visitors local currency detection**: this feature is more targeted and allows to set currency of prices for the site visitors in their native currency when they visited the shop for the first time. Currency changes automatically according to the visitor IP, and even more - if to enable option '**Checkout by GeoIP rules**' your customers always will buy products in their local currency!
 
-&#9989;&nbsp;**Fixed minimum amount for FREE delivery for each currency**: allows to set minimum amount for FREE delivery as fixed value for each currency
+🚚&nbsp;**Fixed minimum amount for FREE delivery for each currency**: allows to set minimum amount for FREE delivery as fixed value for each currency
 
-&#9989;&nbsp;**Fixed minimum amount for shipping for each currency**: allows to set minimum amount for shipping as fixed value for each currency
+📦&nbsp;**Fixed minimum amount for shipping for each currency**: allows to set minimum amount for shipping as fixed value for each currency
 
-&#9989;&nbsp;**Fixed amount for coupons for each currency**: you can set different amounts in coupons of your shop for different currencies. In another way the system will calculate amounts according to the currencies rates and relatively to the basic currency
+🎫&nbsp;**Fixed amount for coupons for each currency**: you can set different amounts in coupons of your shop for different currencies. In another way the system will calculate amounts according to the currencies rates and relatively to the basic currency
 
-&#9989;&nbsp;**Fixed minimum and maximum coupon verification amount for each currency**: for different currencies you can set different fixed verification amount instead of calculation by rates relatively to the basic currency
+🔒&nbsp;**Fixed minimum and maximum coupon verification amount for each currency**: for different currencies you can set different fixed verification amount instead of calculation by rates relatively to the basic currency
 
-&#9989;&nbsp;**Show approximate price**: shows approximate price on the shop page and the single product page with currency of user defined by IP in the GeoIP rules tab if such rule exists. Works only with currencies rates data and NOT with fixed prices rules and geo rules. If system will define by GeoIP visitor country and visitor will switch currency - he/she always will see near the product price approximate price in his local currency.
+💸&nbsp;**Show approximate price**: shows approximate price on the shop page and the single product page with currency of user defined by IP in the GeoIP rules tab if such rule exists. Works only with currencies rates data and NOT with fixed prices rules and geo rules. If system will define by GeoIP visitor country and visitor will switch currency - he/she always will see near the product price approximate price in his local currency.
 
-&#9989;&nbsp;**Show approximate amount**: shows approximate amount on the checkout page and on the cart page with currency of user defined by IP in the GeoIP rules tab if such rule exists. Works only with currencies rates data and NOT with fixed prices rules and geo rules.
+🛒&nbsp;**Show approximate amount**: shows approximate amount on the checkout page and on the cart page with currency of user defined by IP in the GeoIP rules tab if such rule exists. Works only with currencies rates data and NOT with fixed prices rules and geo rules.
 
-&#9989;&nbsp;**Compatibility with cache plugins**: if your site uses any cache plugins enable option 'I am using cache plugin on my site', reset the site cache and from now your shop visitors can switch currencies without any problems!
+⚙️&nbsp;**Compatibility with cache plugins**: if your site uses any cache plugins enable option 'I am using cache plugin on my site', reset the site cache and from now your shop visitors can switch currencies without any problems!
 
-&#9989;&nbsp;**Orders keeps in currency of the deal**: each order in your shop keeps in currency the customer paid, if option 'Is multiple allowed' is enabled!
+📝&nbsp;**Orders keeps in currency of the deal**: each order in your shop keeps in currency the customer paid, if option 'Is multiple allowed' is enabled!
 
-&#9989;&nbsp;**Price info icon**: show info icon near the price of the products which while its under mouse hover shows prices of products in all other currencies
+ℹ️&nbsp;**Price info icon**: show info icon near the price of the products which while its under mouse hover shows prices of products in all other currencies
 
-&#9989;&nbsp;**Shortcode [[woocs_price]](https://currency-switcher.com/shortcode/woocs_price/)**: allows to insert a product price (switchable) directly into shop promotion articles
+🔤&nbsp;**Shortcode [[woocs_price]](https://currency-switcher.com/shortcode/woocs_price/)**: allows to insert a product price (switchable) directly into shop promotion articles
 
-&#9989;&nbsp;**Prices without cents**: recounts prices without cents for such currencies like JPY or TWD which by its nature have not cents. Test it for checkout after setup!
+💴&nbsp;**Prices without cents**: recounts prices without cents for such currencies like JPY or TWD which by its nature have not cents. Test it for checkout after setup!
 
-&#9989;&nbsp;Ability to set currency for new order which created through admin panel by hands
+🛠️&nbsp;Ability to set currency for new order which created through admin panel by hands
 
-&#9989;&nbsp;Ability to recount order from any currency to the basic currency in multi currency mode of the plugin
+🧮&nbsp;Ability to recount order from any currency to the basic currency in multi currency mode of the plugin
 
-&#9989;&nbsp;**Possible to change currency according to the language**: if you you using WPML or Polylang plugins in your shop and by business logic you want to set currency according to the current language [it is possible with FOX API](https://currency-switcher.com/switch-currency-with-language-change/)
+🔄&nbsp;**Possible to change currency according to the language**: if you you using WPML or Polylang plugins in your shop and by business logic you want to set currency according to the current language [it is possible with FOX API](https://currency-switcher.com/switch-currency-with-language-change/)
 
-&#9989;&nbsp;FOX understand currency in the site link as [demo.currency-switcher.com/?currency=EUR](https://demo.currency-switcher.com/?currency=EUR)
+🔗&nbsp;FOX understand currency in the site link as [demo.currency-switcher.com/?currency=EUR](https://demo.currency-switcher.com/?currency=EUR)
 
-&#9989;&nbsp;**No GET data in the link**: switches currency without GET properties (?currency=USD) in the link (optionally)
+🚫&nbsp;**No GET data in the link**: switches currency without GET properties (?currency=USD) in the link (optionally)
 
-&#9989;&nbsp;**Smart Designer**: Interactive customization of currency drop-down. [Description](https://currency-switcher.com/how-to-customize-currency-switcher-view/), [Demo page](https://demo.currency-switcher.com/woocs-smart-designer).
+🎨&nbsp;**Smart Designer**: Interactive customization of currency drop-down. [Description](https://currency-switcher.com/how-to-customize-currency-switcher-view/), [Demo page](https://demo.currency-switcher.com/woocs-smart-designer).
 
-&#9989;&nbsp;**Selected currency storage**: For the site admin FOX provides set of mechanisms to storage user selected currency on different hosting architectures: Session, Transient, Memcached, Redis
+💾&nbsp;**Selected currency storage**: For the site admin FOX provides set of mechanisms to storage user selected currency on different hosting architectures: Session, Transient, Memcached, Redis
 
-&#9989;&nbsp;**Wide API**: For site developer - advanced [API functionality set](https://currency-switcher.com/codex/) which allows to manipulate with prices and their rates on the fly using conditional logic
+🖥️&nbsp;**Wide API**: For site developer - advanced [API functionality set](https://currency-switcher.com/codex/) which allows to manipulate with prices and their rates on the fly using conditional logic
 
-&#9989;&nbsp;**Easy to use for administrators and shop customers**: install, set settings for couple of minutes and let your shop make more money!
+👍&nbsp;**Easy to use for administrators and shop customers**: install, set settings for couple of minutes and let your shop make more money!
 
-&#9989;&nbsp;**FOX is chatGPT friendly plugin** you can ask help to chat gpt about the plugin features using the plugin former name WOOCS, example: "How to use [woocs] shortcode?"
+🤖&nbsp;**FOX is chatGPT friendly plugin** you can ask help to chat gpt about the plugin features using the plugin former name WOOCS, example: "How to use [woocs] shortcode?"
 
-&#9989;&nbsp;Compatible with [WPML](https://wpml.org/plugin/woocommerce-currency-switcher/)
+🌐&nbsp;Compatible with [WPML](https://wpml.org/plugin/woocommerce-currency-switcher/)
 
-&#9989;&nbsp;Compatible with [WooCommerce Products Filter](https://products-filter.com/)
+🔎&nbsp;Compatible with [WooCommerce Products Filter](https://products-filter.com/)
 
-&#9989;&nbsp;Compatible with [CTX Feed – WooCommerce Product Feed Generator](https://wordpress.org/plugins/webappick-product-feed-for-woocommerce/)
+📈&nbsp;Compatible with [CTX Feed – WooCommerce Product Feed Generator](https://wordpress.org/plugins/webappick-product-feed-for-woocommerce/)
 
-&#9989;&nbsp;Compatible with [RnB - WooCommerce Booking & Rental Plugin](https://codecanyon.pluginus.net/item/rnb-woocommerce-rental-booking-system/14835145)
+📅&nbsp;Compatible with [RnB - WooCommerce Booking & Rental Plugin](https://codecanyon.pluginus.net/item/rnb-woocommerce-rental-booking-system/14835145)
 
-&#9989;&nbsp;95% compatibility with different payment gates in multi currency mode, just try it!
+🔄&nbsp;95% compatibility with different payment gates in multi currency mode, just try it!
 
-&#9989;&nbsp;We do [compatibility](https://currency-switcher.com/codex/#compatibility) with our special program [FOX LABS](https://currency-switcher.com/woocs-labs)
+🧪&nbsp;We do [compatibility](https://currency-switcher.com/codex/#compatibility) with our special program [FOX LABS](https://currency-switcher.com/woocs-labs)
 
-&#9989;&nbsp;**Strong technical support which each day works with tones of code!**
+🛠️&nbsp;**Strong technical support which each day works with tones of code!**
 
 
 ### PREMIUM FEATURES
@@ -184,6 +185,12 @@ R: [FAQ](https://currency-switcher.com/faq/)
 
 
 == Changelog ==
+
+= 1.4.2.1 =
+* 1 security issue fixed thanks to Ananda Dhakal from patchstack.com
+
+= 1.4.2 =
+* bunch of small fixes, improved code security
 
 = 1.4.1.9 =
 * 1 security issue fixed thanks to stealthcopter from Wordfence

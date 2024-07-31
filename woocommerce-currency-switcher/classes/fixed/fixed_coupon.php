@@ -24,7 +24,7 @@ final class WOOCS_FIXED_COUPON extends WOOCS_FIXED_AMOUNT {
         $data['post_id'] = $post->ID;
         $data['type'] = 'amount';
 
-        echo $this->render_html(WOOCS_PATH . 'views/fixed/product_coupon_data.php', $data);
+        $this->render_html_e(WOOCS_PATH . 'views/fixed/product_coupon_data.php', $data);
     }
 
     public function add_fixed_coupon_restriction_amount() {
@@ -39,7 +39,7 @@ final class WOOCS_FIXED_COUPON extends WOOCS_FIXED_AMOUNT {
         $data['post_id'] = $post->ID;
         $data['type'] = 'restriction';
 
-        echo $this->render_html(WOOCS_PATH . 'views/fixed/product_coupon_restriction_data.php', $data);
+        $this->render_html_e(WOOCS_PATH . 'views/fixed/product_coupon_restriction_data.php', $data);
     }
     public function save_fixed_coupon($post_id){
         

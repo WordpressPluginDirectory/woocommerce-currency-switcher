@@ -168,14 +168,14 @@ class WOOCS_reports {
                             $selected = "selected='selected'";
                         }
                         ?>
-                        <option <?php echo $selected ?> value="<?php echo $actual_link . "&currency=" . $key ?>"><?php echo $key ?></option>
+                        <option <?php echo esc_attr($selected) ?> value="<?php echo esc_attr($actual_link) . "&currency=" . esc_attr($key) ?>"><?php echo esc_attr($key) ?></option>
                     <?php } ?>
 
                 </select>
             </li>
-            <?php echo html_entity_decode('&lt;script&gt;'); ?>
+            <script>
             jQuery('.woocs_report_currency_switcher').appendTo(jQuery('.stats_range ul'));
-            <?php echo html_entity_decode('&lt;/script&gt;'); ?>
+            </script>
             <?php
         }
     }

@@ -8,7 +8,7 @@
 
     });
 
-
+/*
     document.addEventListener('woocs_admin_theme_id', function (e) {
         jQuery.post(ajaxurl, {
             action: "woocs_admin_theme_id",
@@ -17,7 +17,7 @@
             window.location.reload();
         });
     });
-
+*/
 
 })(jQuery, window);
 

@@ -131,7 +131,7 @@ class WOOCS_SMART_DESIGNER {
         $designs[] = $id;
         update_option('woocs_sd', $designs);
         update_option('woocs_sd_max', $id);
-        die("" . $id);
+        die("" . esc_attr($id));
     }
 
     //ajax

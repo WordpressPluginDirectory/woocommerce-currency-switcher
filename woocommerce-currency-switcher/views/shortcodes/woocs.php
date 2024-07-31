@@ -32,8 +32,7 @@ if (!isset($shortcode_params['sd'])) {
 
         wp_enqueue_style('woocs-style-' . $num, $styles_link . "style-{$num}/styles.css", array(), WOOCS_VERSION);
         wp_enqueue_script('woocs-style-' . $num, $styles_link . "style-{$num}/actions.js", array('jquery'), WOOCS_VERSION);
-        echo $this->render_html($styles_path . "style-{$num}/index.php", $shortcode_params);
-
+		$this->render_html_e($styles_path . "style-{$num}/index.php", $shortcode_params);
         return FALSE;
     }
 
@@ -96,7 +95,7 @@ if (!isset($shortcode_params['sd'])) {
         ?>
 
 
-        <form method="<?php echo esc_attr(apply_filters('woocs_form_method', 'post')) ?>" action="" class="woocommerce-currency-switcher-form <?php if ($show_flags): ?>woocs_show_flags<?php endif; ?>" data-ver="<?php echo WOOCS_VERSION ?>">
+        <form method="<?php echo esc_attr(apply_filters('woocs_form_method', 'post')) ?>" action="" class="woocommerce-currency-switcher-form <?php if ($show_flags): ?>woocs_show_flags<?php endif; ?>" data-ver="<?php echo esc_attr(WOOCS_VERSION) ?>">
             <input type="hidden" name="woocommerce-currency-switcher" value="<?php echo esc_attr($this->current_currency) ?>" />
             <select name="woocommerce-currency-switcher" data-width="<?php echo esc_attr($width) ?>" data-flag-position="<?php echo esc_attr($flag_position) ?>" class="woocommerce-currency-switcher <?php echo esc_attr($css_class) ?>" onchange="woocs_redirect(this.value); void(0);">
                 <?php foreach ($all_currencies as $key => $currency) : ?>
@@ -125,10 +124,10 @@ if (!isset($shortcode_params['sd'])) {
                     }
                     ?>
 
-                    <option class="woocs_option_img_<?php echo esc_attr($key) ?>" value="<?php echo esc_attr($key) ?>" <?php selected($this->current_currency, $key) ?> data-imagesrc="<?php if ($show_flags) echo(!empty($currency['flag']) ? $currency['flag'] : $empty_flag); ?>" data-icon="<?php if ($show_flags) echo(!empty($currency['flag']) ? $currency['flag'] : $empty_flag); ?>" data-description="<?php echo esc_attr($currency['description']) ?>"><?php echo esc_html($option_txt) ?></option>
+                    <option class="woocs_option_img_<?php echo esc_attr($key) ?>" value="<?php echo esc_attr($key) ?>" <?php selected($this->current_currency, $key) ?> data-imagesrc="<?php if ($show_flags) echo esc_attr((!empty($currency['flag']) ? $currency['flag'] : $empty_flag)); ?>" data-icon="<?php if ($show_flags) echo esc_attr((!empty($currency['flag']) ? $currency['flag'] : $empty_flag)); ?>" data-description="<?php echo esc_attr($currency['description']) ?>"><?php echo esc_html($option_txt) ?></option>
                 <?php endforeach; ?>
             </select>
-            <div class="woocs_display_none" style="display: none;" >FOX v.<?php echo WOOCS_VERSION ?></div>
+            <div class="woocs_display_none" style="display: none;" >FOX v.<?php echo esc_html(WOOCS_VERSION) ?></div>
         </form>
         <?php
     }
@@ -138,10 +137,10 @@ if (!isset($shortcode_params['sd'])) {
         $currencies = $WOOCS_SD->get_currencies();
         $title_value = isset($sd_settings['title_value']) ? $sd_settings : '__CODE__';
         if (isset($_GET['action']) AND $_GET['action'] === 'elementor') {
-            echo "[woocs sd={$sd_id}]"; //fix for elementor to avoid showing loader
+            echo esc_html("[woocs sd={$sd_id}]"); //fix for elementor to avoid showing loader
         } else {
             ?>
-            <div data-woocs-sd='<?php echo wc_esc_json(json_encode($sd_settings)) ?>' data-woocs-ver='<?php echo WOOCS_VERSION ?>' style="width: <?php echo (isset($sd_settings['width']) ? esc_attr($sd_settings['width']) . 'px' : 'auto') ?>; max-width: 100%;" data-woocs-sd-currencies='<?php echo wc_esc_json(json_encode($currencies)) ?>'><div class="woocs-lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+            <div data-woocs-sd='<?php echo wc_esc_json(json_encode($sd_settings)) ?>' data-woocs-ver='<?php echo esc_attr(WOOCS_VERSION) ?>' style="width: <?php echo esc_attr((isset($sd_settings['width']) ? esc_attr($sd_settings['width']) . 'px' : 'auto')) ?>; max-width: 100%;" data-woocs-sd-currencies='<?php echo wc_esc_json(json_encode($currencies)) ?>'><div class="woocs-lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
             <?php
         }
     }

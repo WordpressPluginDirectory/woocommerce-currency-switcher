@@ -64,5 +64,11 @@ class WOOCS_FIXED_AMOUNT {
         include($pagepath);
         return ob_get_clean();
     }
-
+    public function render_html_e($pagepath, $data = array()) {
+        if (isset($data['pagepath'])) {
+            unset($data['pagepath']);
+        }
+        @extract($data);
+        include($pagepath);
+    }
 }

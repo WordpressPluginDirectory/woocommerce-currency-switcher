@@ -42,7 +42,7 @@ final class WOOCS {
         'reset_in_multiple' => false, //normal is false
         'disable_currency_switching' => false//normal is false. To force the customer to pay in Welcome currency for example, do it by your own logic
     ); //just for some setting for current wp theme adapting - for support only - it is logic hack - be care!!
-    public $notes_for_free = true; //dev, displays notes for free version only
+    public $notes_for_free = true; //dev
     public $statistic = null;
     public $geoip_profiles = null;
     public $world_currencies = null;
@@ -185,7 +185,7 @@ final class WOOCS {
 
             update_option('woocs_storage_server', 'localhost');
             update_option('woocs_storage_port', 11211);
-            update_option('woocs_admin_theme_id', 1); //all new customers let use new admin panel
+            //update_option('woocs_admin_theme_id', 1); //all new customers let use new admin panel
 
 
             $geoIP_profiles = array('woocs_profile_def_p777' => array(
@@ -347,6 +347,7 @@ final class WOOCS {
 
         add_filter('woocommerce_price_format', array($this, 'woocommerce_price_format'), 9999);
         add_filter('woocommerce_thankyou_order_id', array($this, 'woocommerce_thankyou_order_id'), 9999);
+        add_action('woocommerce_checkout_update_order_meta', array($this, 'woocommerce_checkout_update_order_meta'), 9999, 2);
         add_filter('woocommerce_before_resend_order_emails', array($this, 'woocommerce_before_resend_order_emails'), 1);
         add_filter('woocommerce_email_actions', array($this, 'woocommerce_email_actions'), 10);
         add_action('woocommerce_order_status_completed', array($this, 'woocommerce_order_status_completed'), 1);
@@ -405,10 +406,6 @@ final class WOOCS {
 
         add_action('wp_ajax_woocs_set_currency_ajax', array($this, 'woocs_set_currency_ajax'));
         add_action('wp_ajax_nopriv_woocs_set_currency_ajax', array($this, 'woocs_set_currency_ajax'));
-
-        add_action('wp_ajax_woocs_admin_theme_id', function () {
-            update_option('woocs_admin_theme_id', intval($_REQUEST['theme_id']));
-        });
 
 //+++
 
@@ -524,6 +521,9 @@ final class WOOCS {
         //my acount orders
         add_action('woocommerce_my_account_my_orders_column_order-total', array($this, 'override_my_account_orders'), 777);
         add_action('woocommerce_view_order', array($this, 'override_my_account_order'), 7);
+
+        // position of the currency symbol in the cart and checkout blocks
+        add_filter('option_woocommerce_currency_pos', array($this, 'override_woocommerce_currency_pos'));
 
         //add_filter( 'wc_get_price_thousand_separator', array($this, 'override_thousand_sep'));
         //add_filter( 'wc_get_price_decimal_separator', array($this, 'override_decimal_sep'));
@@ -647,6 +647,7 @@ final class WOOCS {
             return;
         }
 
+        add_action('admin_notices', array($this, 'notice_incompatibility_plugin'));
         //hpos
         if ($this->woocs_hpos->isEnabledHpos()) {
             add_action('order_edit_form_tag', array($this, 'order_edit_form_tag'));
@@ -971,7 +972,9 @@ final class WOOCS {
                 //***
                 $headers = 'MIME-Version: 1.0' . "\r\n";
                 $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-                mail(get_bloginfo('admin_email'), 'Currency rates updated on ' . get_bloginfo('name'), $message, $headers);
+                if (function_exists('mail')) {
+                    mail(get_bloginfo('admin_email'), 'Currency rates updated on ' . get_bloginfo('name'), $message, $headers);
+                }
             }
 
             $email_is_sent = true;
@@ -1193,7 +1196,7 @@ final class WOOCS {
         //$data['order'] = new WC_Order($post->ID);
         $data['order'] = ( $post instanceof WP_Post ) ? wc_get_order($post->ID) : $post;
         wp_enqueue_script('woocs-meta-script', WOOCS_LINK . 'js/meta-box.js', array('jquery'), WOOCS_VERSION);
-        echo $this->render_html(WOOCS_PATH . 'views/woocs_order_metabox.php', $data);
+        $this->render_html_e(WOOCS_PATH . 'views/woocs_order_metabox.php', $data);
     }
 
     public function wp_head() {
@@ -1218,9 +1221,9 @@ final class WOOCS {
         wp_enqueue_script('woocs-price-filter-frontend');
 
         //  wp_add_inline_script('wc-price-slider_33', $this->init_js_properties(), 'before');
-        echo html_entity_decode('&lt;script&gt;');
-        echo $this->init_js_properties();
-        echo html_entity_decode('&lt;/script&gt;');
+        //echo html_entity_decode('&lt;script&gt;');
+        // echo $this->init_js_properties();
+        // echo html_entity_decode('&lt;/script&gt;');
         if ($this->get_drop_down_view() == 'ddslick') {
             wp_enqueue_script('jquery.ddslick.min', WOOCS_LINK . 'js/jquery.ddslick.min.js', array('jquery'), WOOCS_VERSION);
         }
@@ -1243,6 +1246,8 @@ final class WOOCS {
 
         wp_enqueue_style('woocommerce-currency-switcher', WOOCS_LINK . 'css/front.css', array(), WOOCS_VERSION);
         wp_enqueue_script('woocommerce-currency-switcher', WOOCS_LINK . 'js/front.js', array('jquery'), WOOCS_VERSION);
+
+        wp_add_inline_script('woocommerce-currency-switcher', $this->init_js_properties(), 'before');
         if (isset($_GET['currency'])) {
             //wp_add_inline_script('woocommerce-currency-switcher', $this->init_js_footer());
         }
@@ -1331,10 +1336,10 @@ final class WOOCS {
 
         var woocs_is_mobile = <?php echo (int) wp_is_mobile() ?>;
         var woocs_special_ajax_mode = <?php echo (int) get_option('woocs_special_ajax_mode', 0) ?>;
-        var woocs_drop_down_view = "<?php echo $this->get_drop_down_view(); ?>";
+        var woocs_drop_down_view = "<?php echo esc_html($this->get_drop_down_view()); ?>";
         var woocs_current_currency = <?php echo json_encode((isset($currencies[$this->current_currency]) ? $currencies[$this->current_currency] : $currencies[$this->default_currency])) ?>;
         var woocs_default_currency = <?php echo json_encode($currencies[$this->default_currency]) ?>;
-        var woocs_redraw_cart = <?php echo apply_filters('woocs_redraw_cart', 1) ?>;
+        var woocs_redraw_cart = <?php echo esc_html(apply_filters('woocs_redraw_cart', 1)) ?>;
         var woocs_array_of_get = '{}';
         <?php if (!empty($_GET)): ?>
             <?php
@@ -1351,7 +1356,7 @@ final class WOOCS {
 
         woocs_array_no_cents = '<?php echo json_encode($this->no_cents); ?>';
 
-        var woocs_ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
+        var woocs_ajaxurl = "<?php echo esc_attr(admin_url('admin-ajax.php')); ?>";
         var woocs_lang_loading = "<?php esc_html_e('loading', 'woocommerce-currency-switcher') ?>";
         var woocs_shop_is_cached =<?php echo (int) $this->shop_is_cached ?>;
         <?php
@@ -1588,18 +1593,25 @@ final class WOOCS {
 
         wp_enqueue_script('woocs-sd-popup23', WOOCS_LINK . 'js/popup23.js', [], WOOCS_VERSION);
         wp_enqueue_style('woocs-popup-23', WOOCS_LINK . 'css/popup23.css', array(), WOOCS_VERSION);
+        /*
+          if ($this->get_admin_theme_id() === 1) {
+          wp_enqueue_script('woocs-world-currencies', WOOCS_LINK . 'js/world-currencies.js', [], WOOCS_VERSION);
+          wp_enqueue_script('woocommerce-currency-switcher-options', WOOCS_LINK . 'js/options-2.js', array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), WOOCS_VERSION);
+          wp_enqueue_media();
 
-        if ($this->get_admin_theme_id() === 1) {
-            wp_enqueue_script('woocs-world-currencies', WOOCS_LINK . 'js/world-currencies.js', [], WOOCS_VERSION);
-            wp_enqueue_script('woocommerce-currency-switcher-options', WOOCS_LINK . 'js/options-2.js', array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), WOOCS_VERSION);
-            wp_enqueue_media();
+          $this->render_html_e(WOOCS_PATH . 'views/plugin_options_2.php', $args);
+          } else {
+          wp_enqueue_script('woocommerce-currency-switcher-options', WOOCS_LINK . 'js/options-1.js', array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), WOOCS_VERSION);
+          $this->render_html_e(WOOCS_PATH . 'views/plugin_options_1.php', $args);
+          }
+         */
 
-            echo $this->render_html(WOOCS_PATH . 'views/plugin_options_2.php', $args);
-        } else {
-            wp_enqueue_script('woocommerce-currency-switcher-options', WOOCS_LINK . 'js/options-1.js', array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), WOOCS_VERSION);
-            echo $this->render_html(WOOCS_PATH . 'views/plugin_options_1.php', $args);
-        }
+        wp_enqueue_script('woocs-world-currencies', WOOCS_LINK . 'js/world-currencies.js', [], WOOCS_VERSION);
+        wp_enqueue_script('woocommerce-currency-switcher-options', WOOCS_LINK . 'js/options-2.js', array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), WOOCS_VERSION);
+        wp_enqueue_media();
+        $this->render_html_e(WOOCS_PATH . 'views/plugin_options_2.php', $args);
 
+        //+++
 
         wp_localize_script('woocommerce-currency-switcher-options', 'woocs_lang', [
             'blind_option' => esc_html__("Native WooCommerce price filter does not see data generated by this feature.", 'woocommerce-currency-switcher'),
@@ -2321,7 +2333,12 @@ final class WOOCS {
             $args = array();
         }
 
-        if (!isset($args['id']) AND is_product()) {
+        if (isset($args['sku']) && !empty($args['sku'])) {
+            $id = wc_get_product_id_by_sku($args['sku']);
+            if ($id) {
+                $product_o = wc_get_product($id);
+            }
+        } elseif (!isset($args['id']) AND is_product()) {
             global $product;
             $product_o = $product;
         } else {
@@ -2646,7 +2663,7 @@ final class WOOCS {
 
         if ($custom_rate) {
             if ($is_ajax) {
-                echo $custom_rate;
+                echo esc_html($custom_rate);
                 exit;
             } else {
                 return $custom_rate;
@@ -2669,11 +2686,15 @@ final class WOOCS {
                 $date = current_time('timestamp', true);
                 $yql_query_url = 'https://query1.finance.yahoo.com/v8/finance/chart/' . $this->default_currency . $this->escape($_REQUEST['currency_name']) . '=X?symbol=' . $this->default_currency . $this->escape($_REQUEST['currency_name']) . '%3DX&period1=' . ( $date - 60 * 86400 ) . '&period2=' . $date . '&interval=1d&includePrePost=false&events=div%7Csplit%7Cearn&lang=en-US&region=US&corsDomain=finance.yahoo.com';
 
-                if (function_exists('curl_init') AND $woocs_use_curl) {
+                if (function_exists('wp_remote_get')) {
+                    $response = wp_remote_get($yql_query_url);
+                    $res = wp_remote_retrieve_body($response);
+                } elseif (function_exists('curl_init') AND $woocs_use_curl) {
                     $res = $this->file_get_contents_curl($yql_query_url);
                 } else {
                     $res = file_get_contents($yql_query_url);
                 }
+
                 //$yql_query_url="http://query.yahooapis.com/v1/public/yql?q=select+%2A+from+yahoo.finance.xchange+where+pair+in+EURGBP&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 //***
                 $data = json_decode($res, true);
@@ -2746,7 +2767,6 @@ final class WOOCS {
                 $currency_data = json_decode($res, true);
                 $rates = array();
 
-                //var_dump($currency_data);
                 if (!empty($currency_data)) {
                     foreach ($currency_data as $c) {
                         if ($c['base_ccy'] == 'UAH') {
@@ -3324,7 +3344,7 @@ final class WOOCS {
 
 //***
         if ($is_ajax) {
-            echo $request;
+            echo esc_html($request);
             exit;
         } else {
             return $request;
@@ -3485,6 +3505,20 @@ final class WOOCS {
         return $order_id;
     }
 
+    public function woocommerce_checkout_update_order_meta($order_id, $data) {
+        $currencies = $this->get_currencies();
+//+++
+        //HPOS
+        $order = wc_get_order($order_id);
+        if (!$order) {
+            return;
+        }
+        $order->update_meta_data('_woocs_order_rate', $currencies[$this->current_currency]['rate']);
+        $order->update_meta_data('_woocs_order_base_currency', $this->default_currency);
+        $order->update_meta_data('_woocs_order_currency_changed_mannualy', 0);
+        $order->save();
+    }
+
     public function woocommerce_cart_totals_order_total_html($output) { {
             return $output;
         }
@@ -3602,6 +3636,14 @@ final class WOOCS {
         ob_start();
         include($pagepath);
         return ob_get_clean();
+    }
+
+    public function render_html_e($pagepath, $data = array()) {
+        if (isset($data['pagepath'])) {
+            unset($data['pagepath']);
+        }
+        @extract($data);
+        include($pagepath);
     }
 
     public function get_sign_rate($atts) {
@@ -4147,7 +4189,7 @@ final class WOOCS {
 
         $value = number_format($v * floatval($_REQUEST['amount']), intval($_REQUEST['precision']), $this->decimal_sep, '');
 
-        wp_die($value);
+        wp_die(esc_html($value));
     }
 
 //for refreshing mini-cart widget
@@ -5472,7 +5514,7 @@ final class WOOCS {
         global $wp_filter;
         $functions = debug_backtrace();
         foreach ($functions as $funcs) {
-            //var_dump($funcs['function']);
+
             if ($funcs['function'] == 'add_rate') {
                 $decimal = 2;
                 $decimal = $this->get_currency_price_num_decimals($this->default_currency);
@@ -6047,7 +6089,7 @@ final class WOOCS {
         if (get_option('woocs_is_multiple_allowed', 0)) {
             if (function_exists("wc_get_order_types") AND in_array($typenow, wc_get_order_types('order-meta-boxes'), true) AND $width == 'top') {
                 ?>
-                <a href="javascript:woocs_recalculate_all_orders_data();void(0);" class="button woocs_recalculate_all_orders_curr_button"><?php esc_html_e("Recalculate all orders", 'woocommerce-currency-switcher') ?>&nbsp;<img class="help_tip" data-tip="FOX: <?php esc_html_e('Recalculate all orders with basic currency. Recommended test this option on the clone of your site! Read the documentation of the plugin about it!', 'woocommerce-currency-switcher') ?>" src="<?php echo WOOCS_LINK ?>/img/help.png" height="16" width="16" /><img class="woocs_ajax_preload" src="<?php echo WOOCS_LINK ?>/img/loading_large.gif" height="18" width="18" /></a>
+                <a href="javascript:woocs_recalculate_all_orders_data();void(0);" class="button woocs_recalculate_all_orders_curr_button"><?php esc_html_e("Recalculate all orders", 'woocommerce-currency-switcher') ?>&nbsp;<img class="help_tip" data-tip="FOX: <?php esc_html_e('Recalculate all orders with basic currency. Recommended test this option on the clone of your site! Read the documentation of the plugin about it!', 'woocommerce-currency-switcher') ?>" src="<?php echo esc_attr(WOOCS_LINK) ?>/img/help.png" height="16" width="16" /><img class="woocs_ajax_preload" src="<?php echo esc_attr(WOOCS_LINK) ?>/img/loading_large.gif" height="18" width="18" /></a>
                 <?php
             }
         }
@@ -6255,7 +6297,7 @@ final class WOOCS {
 
         ob_start();
         ?>
-        <option data-key="<?php echo $key ?>" value='<?php echo json_encode($countries) ?>' ><?php echo $title ?></option>
+        <option data-key="<?php echo esc_attr($key) ?>" value='<?php echo json_encode($countries) ?>' ><?php echo esc_html($title) ?></option>
         <?php
         $response['option'] = ob_get_clean();
         die(json_encode($response));
@@ -6305,60 +6347,70 @@ final class WOOCS {
                 $on = 'WordPress';
             }
             ?>
-            <div class="notice notice-info woocs-pos-relative" id="pn_<?php echo $slug ?>_ask_favour">
-                <button onclick="javascript: pn_<?php echo $slug ?>_dismiss_review(1); void(0);" title="<?php esc_html_e('Later', 'woocommerce-currency-switcher'); ?>" class="notice-dismiss"></button>
-                <div id="pn_<?php echo $slug ?>_review_suggestion">
-                    <p><?php printf(__('Hi! Are you enjoying using %s?', 'woocommerce-currency-switcher'), '<i>FOX - Currency Switcher Professional for WooCommerce</i>') ?></p>
-                    <p><a href="javascript: pn_<?php echo $slug ?>_set_review(1); void(0);"><?php esc_html_e('Yes, I love it', 'woocommerce-currency-switcher'); ?></a> 🙂 | <a href="javascript: pn_<?php echo $slug ?>_set_review(0); void(0);"><?php esc_html_e('Not really...', 'woocommerce-currency-switcher'); ?></a></p>
+            <div class="notice notice-info woocs-pos-relative" id="pn_<?php echo esc_attr($slug) ?>_ask_favour">
+                <button onclick="javascript: pn_<?php echo esc_attr($slug) ?>_dismiss_review(1); void(0);" title="<?php esc_html_e('Later', 'woocommerce-currency-switcher'); ?>" class="notice-dismiss"></button>
+                <div id="pn_<?php echo esc_attr($slug) ?>_review_suggestion">
+                    <p>
+                            <?php esc_html_e('Hi! Are you enjoying using ', 'woocommerce-currency-switcher'); ?>
+                        <i>
+            <?php esc_html_e('FOX - Currency Switcher Professional for WooCommerce?', 'woocommerce-currency-switcher'); ?>
+                        </i>
+                    </p>
+                    <p><a href="javascript: pn_<?php echo esc_attr($slug) ?>_set_review(1); void(0);"><?php esc_html_e('Yes, I love it', 'woocommerce-currency-switcher'); ?></a> 🙂 | <a href="javascript: pn_<?php echo esc_attr($slug) ?>_set_review(0); void(0);"><?php esc_html_e('Not really...', 'woocommerce-currency-switcher'); ?></a></p>
                 </div>
 
-                <div id="pn_<?php echo $slug ?>_review_yes" style="display: none;">
-                    <p><?php printf(__('That\'s awesome! Could you please do us a BIG favor and give it a 5-star rating on %s to help us spread the word and boost our motivation?', 'woocommerce-currency-switcher'), $on) ?></p>
+                <div id="pn_<?php echo esc_attr($slug) ?>_review_yes" style="display: none;">
+                    <p>
+                        <?php esc_html_e('That\'s awesome! Could you please do us a BIG favor and give it a 5-star rating on ', 'woocommerce-currency-switcher'); ?>
+                        <?php echo esc_html($on) ?>
+            <?php esc_html_e(' to help us spread the word and boost our motivation?', 'woocommerce-currency-switcher'); ?>
+                    </p>
+
                     <p><strong>~ PluginUs.Net developers team</strong></p>
                     <p>
-                        <a href="<?php echo $link ?>" class="woocs-ask-favor-1" onclick="pn_<?php echo $slug ?>_dismiss_review(2)" target="_blank"><?php esc_html_e('Okay, you deserve it', 'woocommerce-currency-switcher'); ?></a>&nbsp;
-                        <a href="javascript: pn_<?php echo $slug ?>_dismiss_review(1); void(0);" class="woocs-ask-favor-1"><?php esc_html_e('Nope, maybe later', 'woocommerce-currency-switcher'); ?></a>&nbsp;
-                        <a href="javascript: pn_<?php echo $slug ?>_dismiss_review(2); void(0);"><?php esc_html_e('I already did', 'woocommerce-currency-switcher'); ?></a>
+                        <a href="<?php echo esc_attr($link) ?>" class="woocs-ask-favor-1" onclick="pn_<?php echo esc_attr($slug) ?>_dismiss_review(2)" target="_blank"><?php esc_html_e('Okay, you deserve it', 'woocommerce-currency-switcher'); ?></a>&nbsp;
+                        <a href="javascript: pn_<?php echo esc_attr($slug) ?>_dismiss_review(1); void(0);" class="woocs-ask-favor-1"><?php esc_html_e('Nope, maybe later', 'woocommerce-currency-switcher'); ?></a>&nbsp;
+                        <a href="javascript: pn_<?php echo esc_attr($slug) ?>_dismiss_review(2); void(0);"><?php esc_html_e('I already did', 'woocommerce-currency-switcher'); ?></a>
                     </p>
                 </div>
 
-                <div id="pn_<?php echo $slug ?>_review_no" style="display: none;">
+                <div id="pn_<?php echo esc_attr($slug) ?>_review_no" style="display: none;">
                     <p><?php esc_html_e('We are sorry to hear you aren\'t enjoying FOX. We would love a chance to improve it. Could you take a minute and let us know what we can do better?', 'woocommerce-currency-switcher'); ?></p>
                     <p>
-                        <a href="https://pluginus.net/contact-us/" onclick="pn_<?php echo $slug ?>_dismiss_review(2)" target="_blank"><?php esc_html_e('Give Feedback', 'woocommerce-currency-switcher'); ?></a>&nbsp;
-                        |&nbsp;<a href="javascript: pn_<?php echo $slug ?>_dismiss_review(2); void(0);"><?php esc_html_e('No thanks', 'woocommerce-currency-switcher'); ?></a>
+                        <a href="https://pluginus.net/contact-us/" onclick="pn_<?php echo esc_attr($slug) ?>_dismiss_review(2)" target="_blank"><?php esc_html_e('Give Feedback', 'woocommerce-currency-switcher'); ?></a>&nbsp;
+                        |&nbsp;<a href="javascript: pn_<?php echo esc_attr($slug) ?>_dismiss_review(2); void(0);"><?php esc_html_e('No thanks', 'woocommerce-currency-switcher'); ?></a>
                     </p>
                 </div>
 
 
-            <?php echo html_entity_decode('&lt;script&gt;'); ?>
-                //dynamic script
-                function pn_<?php echo $slug ?>_set_review(yes) {
-                document.getElementById('pn_<?php echo $slug ?>_review_suggestion').style.display = 'none';
-                if (yes) {
-                document.getElementById('pn_<?php echo $slug ?>_review_yes').style.display = 'block';
-                } else {
-                document.getElementById('pn_<?php echo $slug ?>_review_no').style.display = 'block';
-                }
-                }
+                <script>
+                    //dynamic script
+                    function pn_<?php echo esc_attr($slug) ?>_set_review(yes) {
+                        document.getElementById('pn_<?php echo esc_attr($slug) ?>_review_suggestion').style.display = 'none';
+                        if (yes) {
+                            document.getElementById('pn_<?php echo esc_attr($slug) ?>_review_yes').style.display = 'block';
+                        } else {
+                            document.getElementById('pn_<?php echo esc_attr($slug) ?>_review_no').style.display = 'block';
+                        }
+                    }
 
-                function pn_<?php echo $slug ?>_dismiss_review(what = 1) {
-                //1 maybe later, 2 do not ask more
-                jQuery('#pn_<?php echo $slug ?>_ask_favour').fadeOut();
+                    function pn_<?php echo esc_attr($slug) ?>_dismiss_review(what = 1) {
+                        //1 maybe later, 2 do not ask more
+                        jQuery('#pn_<?php echo esc_attr($slug) ?>_ask_favour').fadeOut();
 
-                if (what === 1) {
-                jQuery.post(ajaxurl, {
-                action: '<?php echo $slug ?>_later_rate_alert'
-                });
-                } else {
-                jQuery.post(ajaxurl, {
-                action: '<?php echo $slug ?>_dismiss_rate_alert'
-                });
-                }
+                        if (what === 1) {
+                            jQuery.post(ajaxurl, {
+                                action: '<?php echo esc_attr($slug) ?>_later_rate_alert'
+                            });
+                        } else {
+                            jQuery.post(ajaxurl, {
+                                action: '<?php echo esc_attr($slug) ?>_dismiss_rate_alert'
+                            });
+                        }
 
-                return true;
-                }
-            <?php echo html_entity_decode('&lt;/script&gt;'); ?>
+                        return true;
+                    }
+                </script>
             </div>
             <?php
         });
@@ -6455,5 +6507,54 @@ final class WOOCS {
                 $this->current_currency = $currency;
             }
         }
+    }
+
+    public function override_woocommerce_currency_pos($position) {
+
+        $currency = $this->current_currency;
+
+        $currencies = $this->get_currencies();
+
+        if (isset($currencies[$currency]) && isset($currencies[$currency]['position'])) {
+            $position = $currencies[$currency]['position'];
+        }
+        return $position;
+    }
+
+    public function notice_incompatibility_plugin() {
+
+        $incompatible_plugin = '';
+        if (class_exists('WC_Payments_Features') && class_exists('WCPay\MultiCurrency\MultiCurrency') && WC_Payments_Features::is_customer_multi_currency_enabled()) {
+            $multi_currency = WCPay\MultiCurrency\MultiCurrency::instance();
+            $woocurrencies = $multi_currency->get_enabled_currencies();
+            $incompatible_plugin = "Option: Multi-currency of WooPayments plugin by Woo.";
+            if (count($woocurrencies) == 1 && $multi_currency->get_default_currency()->get_code() == $this->default_currency) {
+                $incompatible_plugin = '';
+            }
+        }
+        if (empty($incompatible_plugin)) {
+            return;
+        }
+        if (!isset($_GET['page']) || 'wc-settings' != $_GET['page']) {
+            return;
+        }
+        ?>
+        <div class="notice notice-info woocs-pos-relative" id="цщщсы_incompatibility_plugin">
+            <p>
+        <?php esc_html_e("Oh no! It looks like you are using two different currency switching plugins and this may lead to incorrect conversion and payment problems", 'woocommerce-currency-switcher'); ?>
+            </p>
+            <span>
+                <b>
+        <?php esc_html_e("Incompatible plugin:", 'woocommerce-currency-switcher'); ?>
+                </b>
+            </span>
+            <span>
+                <i><?php echo esc_html($incompatible_plugin); ?></i>
+            </span>
+            <p>
+        <?php esc_html_e("We strongly recommend disabling one of these plugins for stable operation of your site.", 'woocommerce-currency-switcher'); ?>
+            </p>
+        </div>	
+        <?php
     }
 }

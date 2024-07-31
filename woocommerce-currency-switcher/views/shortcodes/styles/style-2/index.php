@@ -78,13 +78,13 @@ $height = (count($options) - 2) * 65 + 200;
 ?>
 
 
-<div class="woocs-style-2-drop-down" style="width: <?php echo esc_attr($width) ?>;" data-expanded-height="<?= $height ?>">
+<div class="woocs-style-2-drop-down" style="width: <?php echo esc_attr($width) ?>;" data-expanded-height="<?= esc_attr($height) ?>">
     <div class="woocs-style-2-from">
         <div class="woocs-style-2-from-contents">
             <?php if ($show_flags): ?>
-                <div class="woocs-style-2-avatar woocs-style-2-me" style="<?php echo (isset($flags_data[$this->current_currency]) ? $flags_data[$this->current_currency] : '') ?>"></div>
+                <div class="woocs-style-2-avatar woocs-style-2-me" style="<?php echo wp_kses_post((isset($flags_data[$this->current_currency]) ? $flags_data[$this->current_currency] : '')) ?>"></div>
             <?php endif; ?> 
-            <div class="woocs-style-2-name"><?= $options[$this->current_currency] ?></div>
+            <div class="woocs-style-2-name"><?= esc_html($options[$this->current_currency]) ?></div>
         </div>
     </div>
     <div class="woocs-style-2-to">
@@ -94,10 +94,10 @@ $height = (count($options) - 2) * 65 + 200;
             <div class="woocs-style-2-top" <?php if (isset($head_bg)): ?>style="background: <?php echo esc_attr($head_bg) ?>;"<?php endif; ?>>
 
                 <?php if ($show_flags): ?>
-                    <div class="woocs-style-2-avatar-large woocs-style-2-me" style="<?php echo (isset($flags_data[$this->current_currency]) ? $flags_data[$this->current_currency] : '') ?>"></div>
+                    <div class="woocs-style-2-avatar-large woocs-style-2-me" style="<?php echo wp_kses_post((isset($flags_data[$this->current_currency]) ? $flags_data[$this->current_currency] : '')) ?>"></div>
                 <?php endif; ?>
 
-                <div class="woocs-style-2-name-large" <?php if (isset($head_txt_color)): ?>style="color: <?php echo esc_attr($head_txt_color) ?>;"<?php endif; ?>><?= $options[$this->current_currency] ?></div>
+                <div class="woocs-style-2-name-large" <?php if (isset($head_txt_color)): ?>style="color: <?php echo esc_attr($head_txt_color) ?>;"<?php endif; ?>><?= esc_html($options[$this->current_currency]) ?></div>
                 <div class="woocs-style-2-x-touch">
                     <div class="woocs-style-2-x" <?php if (isset($head_close_bg)): ?>style="background: <?php echo esc_attr($head_close_bg) ?>;"<?php endif; ?>>
                         <div class="woocs-style-2-line1" <?php if (isset($head_close_color)): ?>style="background: <?php echo esc_attr($head_close_color) ?>;"<?php endif; ?>></div>
@@ -113,11 +113,11 @@ $height = (count($options) - 2) * 65 + 200;
                 <?php foreach ($options as $key => $value) : ?>
                     <?php if ($key === $this->current_currency AND ! $this->shop_is_cached) continue; ?>
                     <div class="woocs-style-2-row">
-                        <div class="woocs-style-2-link" data-currency="<?php echo $key ?>" data-flag="<?php echo (isset($all_currencies[$key]['flag']) ? $all_currencies[$key]['flag'] : '') ?>" style="<?php
+                        <div class="woocs-style-2-link" data-currency="<?php echo esc_attr($key) ?>" data-flag="<?php echo esc_attr((isset($all_currencies[$key]['flag']) ? $all_currencies[$key]['flag'] : '')) ?>" style="<?php
                         if (isset($flags_data[$key])) {
-                            echo $flags_data[$key];
+                            echo wp_kses_post($flags_data[$key]);
                         }
-                        ?>; <?php if ($key === $this->current_currency): ?>background-size: 40px 25px; background-repeat: no-repeat; background-position: 99% 10px;<?php endif; ?>"><?= $value ?></div>
+                        ?>; <?php if ($key === $this->current_currency): ?>background-size: 40px 25px; background-repeat: no-repeat; background-position: 99% 10px;<?php endif; ?>"><?= esc_html($value) ?></div>
                     </div>
                 <?php endforeach; ?>
 
@@ -129,6 +129,6 @@ $height = (count($options) - 2) * 65 + 200;
     </div>
 </div>
 
-<div class="woocs_display_none">FOX v.<?php echo WOOCS_VERSION ?></div>
+<div class="woocs_display_none">FOX v.<?php echo esc_html(WOOCS_VERSION) ?></div>
 
 

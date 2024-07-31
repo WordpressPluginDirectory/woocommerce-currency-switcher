@@ -24,13 +24,21 @@ final class WOOCS_STORAGE {
             }
         }
 
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } elseif(isset($_SERVER['REMOTE_ADDR'])) {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        } else {
-            $ip='';
-        }
+		if(!empty($_SERVER['HTTP_X_REAL_IP'])){
+			$ip = $_SERVER['HTTP_X_REAL_IP'];
+			if($splitPos = strpos($ip, ',')){
+				$ip = substr($ip, 0, $splitPos);
+			}
+		} else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			if($splitPos = strpos($ip, ',')){
+				$ip = substr($ip, 0, $splitPos);
+			}
+		} elseif(isset($_SERVER['REMOTE_ADDR'])) {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		} else {
+			$ip='';
+		}		
         $this->user_ip = filter_var($ip, FILTER_VALIDATE_IP);
         $this->transient_key = substr(md5($this->user_ip), 7, 23);
         if ($this->type == 'woocs_session') {

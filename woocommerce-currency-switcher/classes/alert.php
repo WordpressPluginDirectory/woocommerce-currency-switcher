@@ -22,7 +22,7 @@ class WOOCS_ADV {
         //***
 
         $this->notices_list = array(
-            // 'woocommerce_bulk_editor' => 'woo-bulk-editor',
+             'woocommerce_bulk_editor' => 'woo-bulk-editor',
             //'weglot' => 'weglot',
             'woot_products_tables' => 'profit-products-tables-for-woocommerce',
         );
@@ -90,9 +90,9 @@ class WOOCS_ADV {
             ?>
             <div class="notice notice-info is-dismissible" id="woocs_alert_woobe">
                 <p class="plugin-card-woo-bulk-editor"<?php if ($screen->id != 'plugin-install') echo ' id="plugin-woobe"' ?>>
-                    Try new plugin for managing and bulk edit WooCommerce Products data in robust and flexible way: <a href="<?php echo network_admin_url('plugin-install.php?tab=plugin-information') ?>&amp;plugin=woo-bulk-editor&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal" aria-label="FOX team recommends" data-title="WOOBE">WOOBE - WooCommerce Bulk Editor Professional</a>.
-                    <a href="<?php echo network_admin_url('plugin-install.php?tab=plugin-information') ?>&amp;plugin=woo-bulk-editor&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal button" aria-label="More information about WOOBE" data-title="WOOBE" id="woocs_alert_install_button_woobe">Install</a>
-                    <a class="install-now button" data-slug="woo-bulk-editor" href="<?php echo network_admin_url('update.php?action=install-plugin') ?>&amp;plugin=woo-bulk-editor&amp;_wpnonce=<?php echo wp_create_nonce('install-plugin-woo-bulk-editor') ?>" aria-label="Install woocommerce bulk editor now" data-name="Woocommerce bulkeditor" style="display:none">Install Now</a>
+                    Try new plugin for managing and bulk edit WooCommerce Products data in robust and flexible way: <a href="<?php echo esc_attr(network_admin_url('plugin-install.php?tab=plugin-information')) ?>&amp;plugin=woo-bulk-editor&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal" aria-label="FOX team recommends" data-title="WOOBE">WOOBE - WooCommerce Bulk Editor Professional</a>.
+                    <a href="<?php echo esc_attr(network_admin_url('plugin-install.php?tab=plugin-information')) ?>&amp;plugin=woo-bulk-editor&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal button" aria-label="More information about WOOBE" data-title="WOOBE" id="woocs_alert_install_button_woobe">Install</a>
+                    <a class="install-now button" data-slug="woo-bulk-editor" href="<?php echo esc_attr(network_admin_url('update.php?action=install-plugin')) ?>&amp;plugin=woo-bulk-editor&amp;_wpnonce=<?php echo esc_attr(wp_create_nonce('install-plugin-woo-bulk-editor')) ?>" aria-label="Install woocommerce bulk editor now" data-name="Woocommerce bulkeditor" style="display:none">Install Now</a>
                 </p>
             </div>
 
@@ -149,9 +149,9 @@ class WOOCS_ADV {
             ?>
             <div class="notice notice-info is-dismissible" id="woocs_alert_woot">
                 <p class="plugin-card-profit-products-tables-for-woocommerce"<?php if ($screen->id != 'plugin-install') echo ' id="plugin-woot"' ?>>
-                    Try new FOX compatible plugin for displaying WooCommerce shop products in table format: <a href="<?php echo network_admin_url('plugin-install.php?tab=plugin-information') ?>&amp;plugin=profit-products-tables-for-woocommerce&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal" aria-label="FOX team recommends" data-title="WOOT">WOOT - WooCommerce Active Products Tables</a>.
-                    <a href="<?php echo network_admin_url('plugin-install.php?tab=plugin-information') ?>&amp;plugin=profit-products-tables-for-woocommerce&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal button" aria-label="More information about WOOT" data-title="WOOT" id="woocs_alert_install_button_woot">Install</a>
-                    <a class="install-now button" data-slug="profit-products-tables-for-woocommerce" href="<?php echo network_admin_url('update.php?action=install-plugin') ?>&amp;plugin=profit-products-tables-for-woocommerce&amp;_wpnonce=<?php echo wp_create_nonce('install-plugin-profit-products-tables-for-woocommerce') ?>" aria-label="Install woot now" data-name="Woocommerce woot" style="display:none">Install Now</a>
+                    Try new FOX compatible plugin for displaying WooCommerce shop products in table format: <a href="<?php echo esc_attr(network_admin_url('plugin-install.php?tab=plugin-information')) ?>&amp;plugin=profit-products-tables-for-woocommerce&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal" aria-label="FOX team recommends" data-title="WOOT">WOOT - WooCommerce Active Products Tables</a>.
+                    <a href="<?php echo esc_attr(network_admin_url('plugin-install.php?tab=plugin-information')) ?>&amp;plugin=profit-products-tables-for-woocommerce&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal button" aria-label="More information about WOOT" data-title="WOOT" id="woocs_alert_install_button_woot">Install</a>
+                    <a class="install-now button" data-slug="profit-products-tables-for-woocommerce" href="<?php echo esc_attr(network_admin_url('update.php?action=install-plugin')) ?>&amp;plugin=profit-products-tables-for-woocommerce&amp;_wpnonce=<?php echo esc_attr(wp_create_nonce('install-plugin-profit-products-tables-for-woocommerce')) ?>" aria-label="Install woot now" data-name="Woocommerce woot" style="display:none">Install Now</a>
                 </p>
             </div>
 
@@ -211,8 +211,8 @@ class WOOCS_ADV {
                 <div class="notice notice-info is-dismissible" id="woocs_alert_weglot">
                     <p class="plugin-card-weglot"<?php if ($screen->id != 'plugin-install') echo ' id="weglot"' ?>>
                         Try <a href="https://weglot.pluginus.net/" target="_blank" title="Weglot">Weglot</a>, FOX compatible plugin, which allows to translate your site on the fly. Install, try and get unique 20% <strong>discount</strong> by secret coupon: <span class="woocs-red">WOOCS</span>.
-                        <a href="<?php echo network_admin_url('plugin-install.php?tab=plugin-information') ?>&amp;plugin=weglot&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal button" aria-label="More information about Weglot" data-title="Weglot" id="woocs_alert_install_button_weglot">Install</a>
-                        <a class="install-now button" data-slug="weglot" href="<?php echo network_admin_url('update.php?action=install-plugin') ?>&amp;plugin=weglot&amp;_wpnonce=<?php echo wp_create_nonce('install-plugin-weglot') ?>" aria-label="Install Weglot now" data-name="Weglot" style="display:none">Install Now</a>
+                        <a href="<?php echo esc_attr(network_admin_url('plugin-install.php?tab=plugin-information')) ?>&amp;plugin=weglot&amp;TB_iframe=true&amp;width=600&amp;height=550" class="thickbox open-plugin-details-modal button" aria-label="More information about Weglot" data-title="Weglot" id="woocs_alert_install_button_weglot">Install</a>
+                        <a class="install-now button" data-slug="weglot" href="<?php echo esc_attr(network_admin_url('update.php?action=install-plugin')) ?>&amp;plugin=weglot&amp;_wpnonce=<?php echo esc_attr(wp_create_nonce('install-plugin-weglot')) ?>" aria-label="Install Weglot now" data-name="Weglot" style="display:none">Install Now</a>
                     </p>
                 </div>
 

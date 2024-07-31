@@ -7,7 +7,7 @@
 
 if (isset($args['before_widget']))
 {
-    echo $args['before_widget'];
+    echo wp_kses_post($args['before_widget']);
 }
 ?>
 
@@ -17,13 +17,13 @@ if (isset($args['before_widget']))
     {
         if (isset($args['before_title']))
         {
-            echo $args['before_title'];
-            echo $instance['title'];
-            echo $args['after_title'];
+            echo wp_kses_post($args['before_title']);
+            echo esc_html($instance['title']);
+            echo wp_kses_post($args['after_title']);
         } else
         {
             ?>
-            <h3 class="widget-title"><?php echo $instance['title'] ?></h3>
+            <h3 class="widget-title"><?php echo esc_html($instance['title']) ?></h3>
             <?php
         }
     }
@@ -62,6 +62,6 @@ if (isset($args['before_widget']))
 <?php
 if (isset($args['after_widget']))
 {
-    echo $args['after_widget'];
+    echo wp_kses_post($args['after_widget']);
 }
 

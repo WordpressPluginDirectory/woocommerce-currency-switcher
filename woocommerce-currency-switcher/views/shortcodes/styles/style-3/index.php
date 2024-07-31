@@ -96,15 +96,15 @@ foreach ($all_currencies as $key => $currency) {
                     }
                     ?>
                     <?php $id = uniqid(); ?>
-                    <div class="woocs-style-3-dlg-select-item" data-currency="<?php echo $key ?>" data-flag="<?php echo (isset($all_currencies[$key]['flag']) ? $all_currencies[$key]['flag'] : '') ?>" style="<?php
+                    <div class="woocs-style-3-dlg-select-item" data-currency="<?php echo esc_attr($key) ?>" data-flag="<?php echo esc_html((isset($all_currencies[$key]['flag']) ? $all_currencies[$key]['flag'] : '')) ?>" style="<?php
                     if (isset($flags_data[$key])) {
-                        echo $flags_data[$key];
+                        echo wp_kses_post($flags_data[$key]);
                     }
                     ?>; <?php if ($key === $this->current_currency): ?>background-size: 40px 25px; background-repeat: no-repeat; background-position: 98% 10px;<?php endif; ?>">
 
-                        <input class="woocs-style-3-dlg-select-radio" id="<?= $id ?>" <?php checked($key === $this->current_currency) ?> name="dlg-selection" type="radio" value="<?= $key ?>">
+                        <input class="woocs-style-3-dlg-select-radio" id="<?= esc_attr($id) ?>" <?php checked($key === $this->current_currency) ?> name="dlg-selection" type="radio" value="<?= esc_html($key) ?>">
 
-                        <label class="woocs-style-3-dlg-select-lbl" for="<?= $id ?>"><?= $value ?></label>
+                        <label class="woocs-style-3-dlg-select-lbl" for="<?= esc_attr($id) ?>"><?= esc_html($value) ?></label>
                     </div>
                 <?php endforeach; ?>
 
@@ -113,13 +113,13 @@ foreach ($all_currencies as $key => $currency) {
     </div>
 
     <button class="woocs-style-3-du-dialog-starter" style="width: <?php echo esc_attr($width) ?>; <?php
-    if (isset($flags_data[$this->current_currency])): echo $flags_data[$this->current_currency] . ' background-size: 40px 25px; background-repeat: no-repeat; background-position: 98% 7px; padding-right: 60px;';
+    if (isset($flags_data[$this->current_currency])): echo wp_kses_post($flags_data[$this->current_currency]) . ' background-size: 40px 25px; background-repeat: no-repeat; background-position: 98% 7px; padding-right: 60px;';
     endif;
     ?>">
-                <?= $options[$this->current_currency] ?>
+                <?= esc_html($options[$this->current_currency]) ?>
     </button>
 
 
-    <div class="woocs_display_none">FOX v.<?php echo WOOCS_VERSION ?></div>
+    <div class="woocs_display_none">FOX v.<?php echo esc_html(WOOCS_VERSION) ?></div>
 
 

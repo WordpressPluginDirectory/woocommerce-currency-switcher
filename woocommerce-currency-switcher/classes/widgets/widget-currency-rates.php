@@ -20,7 +20,7 @@ class WOOCS_RATES extends WP_Widget
         $data['instance'] = $instance;
         wp_enqueue_script('jquery');
         global $WOOCS;
-        echo $WOOCS->render_html(WOOCS_PATH . 'views/widgets/rates.php', $data);
+        $WOOCS->render_html_e(WOOCS_PATH . 'views/widgets/rates.php', $data);
     }
 
     public function update($new_instance, $old_instance)
@@ -44,7 +44,7 @@ class WOOCS_RATES extends WP_Widget
         $data['instance'] = $instance;
         $data['widget'] = $this;
         global $WOOCS;
-        echo $WOOCS->render_html(WOOCS_PATH . 'views/widgets/rates_form.php', $data);
+        $WOOCS->render_html_e(WOOCS_PATH . 'views/widgets/rates_form.php', $data);
     }
 
 }

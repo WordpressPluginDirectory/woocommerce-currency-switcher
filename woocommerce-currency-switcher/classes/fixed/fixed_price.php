@@ -31,7 +31,7 @@ final class WOOCS_FIXED_PRICE extends WOOCS_FIXED_AMOUNT {
 	    $data['post_id'] = $post->ID;
 	    $data['type'] = 'simple';
 	    $data['product_geo_data'] = $this->get_product_geo_data($post->ID);
-	    echo $this->render_html(WOOCS_PATH . 'views/fixed/product_price_data.php', $data);
+	    $this->render_html_e(WOOCS_PATH . 'views/fixed/product_price_data.php', $data);
 	}
     }
 
@@ -50,7 +50,7 @@ final class WOOCS_FIXED_PRICE extends WOOCS_FIXED_AMOUNT {
 	$data['post_id'] = $variation->ID;
 	$data['type'] = 'var';
 	$data['product_geo_data'] = $this->get_product_geo_data($variation->ID);
-	echo $this->render_html(WOOCS_PATH . 'views/fixed/product_price_data.php', $data);
+	$this->render_html_e(WOOCS_PATH . 'views/fixed/product_price_data.php', $data);
     }
 
     //saving data for variable product

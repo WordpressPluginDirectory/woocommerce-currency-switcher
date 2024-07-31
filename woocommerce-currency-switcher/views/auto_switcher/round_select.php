@@ -7,16 +7,16 @@ $currencies = apply_filters('woocs_currency_manipulation_before_show', $WOOCS->g
 
 <?php ob_start() ?> 
 .woocs_auto_switcher.cd-stretchy-nav.nav-is-visible ul a.woocs_curr_curr {
-color: <?php echo $hover_color ?>;
+color: <?php echo esc_attr($hover_color) ?>;
 }
 .woocs_auto_switcher.cd-stretchy-nav.nav-is-visible ul a:hover{
-color: <?php echo $hover_color ?>;
+color: <?php echo esc_attr($hover_color) ?>;
 }
 .woocs_auto_switcher.cd-stretchy-nav {
-top: <?php echo $top ?>;
+top: <?php echo esc_attr($top) ?>;
 }
 .woocs_auto_switcher.cd-stretchy-nav .stretchy-nav-bg {
-background: <?php echo $color ?>;
+background: <?php echo esc_attr($color) ?>;
 }
 <?php if (stripos($basic_field, "__FLAG__") !== false): ?>
     .woocs_auto_switcher .woocs_base_text{
@@ -28,9 +28,9 @@ $data = ob_get_clean();
 wp_add_inline_style('woocommerce-currency-switcher', $data);
 ?>  
 
-<nav class="woocs_auto_switcher  cd-stretchy-nav <?php echo $side ?>" data-view="round_select">
+<nav class="woocs_auto_switcher  cd-stretchy-nav <?php echo esc_attr($side) ?>" data-view="round_select">
     <a class="cd-nav-trigger" href="#">
-        <span class="woocs_current_text"><?php echo $this->prepare_field_text($currencies[$WOOCS->current_currency], $basic_field); ?></span> 
+        <span class="woocs_current_text"><?php echo wp_kses_post($this->prepare_field_text($currencies[$WOOCS->current_currency], $basic_field)); ?></span> 
     </a>
 
     <ul>
@@ -48,13 +48,13 @@ wp_add_inline_style('woocommerce-currency-switcher', $data);
             $add_text = $this->prepare_field_text($item, $add_field);
             ?>  
             <li>
-                <a data-currency="<?php echo $key ?>" href="#" class="<?php echo $current ?> woocs_auto_switcher_link">
+                <a data-currency="<?php echo esc_attr($key) ?>" href="#" class="<?php echo esc_attr($current) ?> woocs_auto_switcher_link">
                     <?php if ($side == 'left'): ?>
-                        <span class="woocs_base_text"><?php echo $base_text ?></span>                  
-                        <span class="woocs_add_field"> <?php echo $add_text ?> </span>              
+                        <span class="woocs_base_text"><?php echo wp_kses_post($base_text) ?></span>                  
+                        <span class="woocs_add_field"> <?php echo wp_kses_post($add_text) ?> </span>              
                     <?php else: ?>
-                        <span class="woocs_add_field"> <?php echo $add_text ?> </span>
-                        <span class="woocs_base_text"><?php echo $base_text ?></span>
+                        <span class="woocs_add_field"> <?php echo wp_kses_post($add_text) ?> </span>
+                        <span class="woocs_base_text"><?php echo wp_kses_post($base_text) ?></span>
                     <?php endif; ?>
                 </a>
             </li>
