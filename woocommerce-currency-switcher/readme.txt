@@ -5,7 +5,7 @@ Tags: woocommerce, currency, switcher, currency switcher, converter
 Requires at least: 4.9.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.4.2.1
+Stable tag: 1.4.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,8 @@ Also the plugin has ajaxed shortcode/widget of [currency converter](https://demo
 
 📅&nbsp;Compatible with [RnB - WooCommerce Booking & Rental Plugin](https://codecanyon.pluginus.net/item/rnb-woocommerce-rental-booking-system/14835145)
 
+📅&nbsp;Compatible with [Points and Rewards for WooCommerce by WP Swings](https://wordpress.org/plugins/points-and-rewards-for-woocommerce/)
+
 🔄&nbsp;95% compatibility with different payment gates in multi currency mode, just try it!
 
 🧪&nbsp;We do [compatibility](https://currency-switcher.com/codex/#compatibility) with our special program [FOX LABS](https://currency-switcher.com/woocs-labs)
@@ -185,6 +187,9 @@ R: [FAQ](https://currency-switcher.com/faq/)
 
 
 == Changelog ==
+
+= 1.4.2.2 =
+* 1 security issue fixed thanks to Arkadiusz Hydzik from Wordfence
 
 = 1.4.2.1 =
 * 1 security issue fixed thanks to Ananda Dhakal from patchstack.com
