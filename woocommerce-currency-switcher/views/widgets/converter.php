@@ -1,6 +1,5 @@
 <?php if (!defined('ABSPATH')) die('No direct access allowed'); ?>
 
-
 <?php
 if (isset($args['before_widget']))
 {
@@ -25,7 +24,7 @@ if (isset($args['before_widget']))
         }
     }
     ?>
-    <?php echo do_shortcode('[woocs_converter exclude="' . $instance['exclude'] . '" precision="' . $instance['precision'] . '"]'); ?>
+    <?php echo do_shortcode('[woocs_converter exclude="' . ($instance['exclude']??'') . '" precision="' . ($instance['precision']??'') . '"]'); ?>
 </div>
 
 <?php

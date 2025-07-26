@@ -91,7 +91,7 @@ if (!function_exists('woocs_price_options_geo')) {
 }
 ?>
 
-<div class="woocs_multiple_simple_panel options_group pricing woocommerce_variation" style="<?php if ($type == 'simple'): ?>display: none;<?php endif; ?>">
+<div class="woocs_multiple_simple_panel options_group pricing woocommerce_variation_fixed" style="<?php if ($type == 'simple'): ?>display: none;<?php endif; ?>">
 
     <ul class="woocs_tab_navbar">
         <?php if ($is_fixed_enabled): ?>

@@ -24,8 +24,7 @@ if (isset($args['before_widget']))
         }
     }
     ?>
-            
-    <?php echo do_shortcode('[woocs_rates exclude="' . $instance['exclude'] . '" precision="' . $instance['precision'] . '"]'); ?>
+    <?php echo do_shortcode('[woocs_rates exclude="' . ($instance['exclude']??'') . '" precision="' . ($instance['precision']??'') . '"]'); ?>
 </div>
 
 <?php

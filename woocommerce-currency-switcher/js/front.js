@@ -171,7 +171,7 @@ jQuery(function ($) {
                 if (typeof woocs_array_of_get.currency === 'undefined') {
 
                     if (jQuery('body').hasClass('single')) {
-                       // jQuery('.woocs_price_info').remove();
+                        // jQuery('.woocs_price_info').remove();
                     }
 
                     /****/
@@ -240,10 +240,10 @@ jQuery(function ($) {
                     var products_currency = {};
                     jQuery.each(jQuery('.woocs_price_code'), function (index, item) {
                         products_ids[jQuery(item).data('redraw-id')] = jQuery(item).data('product-id');
-			if (jQuery(item).data('currency')) {
-			    products_currency[jQuery(item).data('redraw-id')] = jQuery(item).data('currency');
-			}
-                        
+                        if (jQuery(item).data('currency')) {
+                            products_currency[jQuery(item).data('redraw-id')] = jQuery(item).data('currency');
+                        }
+
                     });
 
                     //if no prices on the page - do nothing
@@ -347,12 +347,12 @@ jQuery(function ($) {
 
                 } else {
                     woocs_sumbit_currency_changing = true;
-                    
+
                 }
-		jQuery( ".single_variation_wrap" ).on( "show_variation", function ( event, variation ) {
-			jQuery('.woocs_price_code').removeClass('woocs_preloader_ajax');
-		} );			
-		jQuery('.woocs_price_code').removeClass('woocs_preloader_ajax');
+                jQuery(".single_variation_wrap").on("show_variation", function (event, variation) {
+                    jQuery('.woocs_price_code').removeClass('woocs_preloader_ajax');
+                });
+                jQuery('.woocs_price_code').removeClass('woocs_preloader_ajax');
             }, 300);
 
         }
@@ -409,15 +409,14 @@ function woocs_redirect(currency) {
 
     } else {
         if (Object.keys(woocs_array_of_get).length > 0) {
+	    let get_values = [];
             jQuery.each(woocs_array_of_get, function (index, value) {
-                string_of_get = string_of_get + "&" + index + "=" + value;
+                get_values.push(index + "=" + value);
             });
-
-        }
+	    string_of_get += get_values.join("&");
+	}
         window.location = l + string_of_get + id_key;
     }
-
-
 }
 
 function woocs_refresh_mini_cart(delay) {

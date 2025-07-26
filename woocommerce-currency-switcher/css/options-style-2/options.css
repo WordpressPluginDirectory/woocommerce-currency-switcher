@@ -3314,3 +3314,15 @@ input[name='woocs_rate[]']{
     border: solid 1px #dee2e6 !important;
 }
 
+nav.woocs__tabs-nav{
+    margin: 0 !important;
+}
+
+#woocs-sd-create{
+    margin-left: 11px;
+}
+
+.woocommerce-save-button{
+    margin-left: 11px;
+}
+

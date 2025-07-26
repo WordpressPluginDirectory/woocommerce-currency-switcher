@@ -11,9 +11,11 @@ use Automattic\WooCommerce\Utilities\OrderUtil;
 class WoocsHpos {
 
     private $inabled_hpos = null;
+	
+	private $woocs = null;
 
-    public function __construct() {
-        
+    public function __construct( $woocs ) {
+		$this->woocs = $woocs;
     }
 
     /**
@@ -51,14 +53,13 @@ class WoocsHpos {
     /**
      * Recalculation of the order to another currency
      * 
-     * @param class WOOCS $woocs
      * @param int $order_id
      * @param string $selected_currency
      * @return void
      */
-    public function recalculateOrder($woocs, $order_id, $selected_currency = ''): void {
+    public function recalculateOrder($order_id, $selected_currency = ''): void {
         if (!$selected_currency) {
-            $selected_currency = $woocs->default_currency;
+            $selected_currency = $this->woocs->default_currency;
         }
 
         //HPOS
@@ -70,88 +71,28 @@ class WoocsHpos {
         if (strtolower($order_currency) === strtolower($selected_currency) OR empty($order_currency)) {
             return;
         }
-
-        $decimals = $woocs->get_currency_price_num_decimals($selected_currency, $woocs->price_num_decimals);
-        $currencies = $woocs->get_currencies();
-
-        //***
-        //hpos
-        $order->set_currency($selected_currency);
-        $order->update_meta_data('_woocs_order_currency', $selected_currency);
-        $order->update_meta_data('_woocs_order_base_currency', $woocs->default_currency);
-        $order->update_meta_data('_woocs_order_rate', floatval($currencies[$selected_currency]['rate']));
-        $order->update_meta_data('_woocs_order_currency_changed_mannualy', time());
+		
+		$this->updateMetaData($order, $selected_currency);
 
         //***
-        //hpos
-        $_order_shipping = $order->get_shipping_total();
-        $val = $woocs->back_convert($_order_shipping, $_woocs_order_rate, $decimals);
-        if ($selected_currency !== $woocs->default_currency) {
-            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-        }
+        $_order_shipping_total = $order->get_shipping_total();
+        $order->set_shipping_total($this->recalculateAmount($_order_shipping_total, $_woocs_order_rate, $selected_currency));			
 
-        //hpos
-        $order->set_shipping_total($val);
-
-        //hpos
         $_order_total = $order->get_total();
-        $val = $woocs->back_convert($_order_total, $_woocs_order_rate, $decimals);
-        if ($selected_currency !== $woocs->default_currency) {
-            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-        }
-        //hpos;
-        $order->set_total($val);
+        $order->set_total($this->recalculateAmount($_order_total, $_woocs_order_rate, $selected_currency));
 
-        //hpos
-        //$_refund_amount = get_post_meta($order_id, '_refund_amount', true);
-//		$_refund_amount = $order->get_total_refunded();
-//
-//        $val = $this->back_convert($_refund_amount, $_woocs_order_rate, $decimals);
-//        if ($selected_currency !== $this->default_currency) {
-//            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-//        }
-//        update_post_meta($order_id, '_refund_amount', $val);
-        //fing for hpos
-        //hpos
         $_cart_discount_tax = $order->get_discount_tax();
-        $val = $woocs->back_convert($_cart_discount_tax, $_woocs_order_rate, $decimals);
-        if ($selected_currency !== $woocs->default_currency) {
-            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-        }
-        //hpos
-        $order->set_discount_tax($val);
+        $order->set_discount_tax($this->recalculateAmount($_cart_discount_tax, $_woocs_order_rate, $selected_currency));
 
-        //hpos
-        //$_order_tax = get_post_meta($order_id, '_order_tax', true);
-//		$_order_tax = $order->get_total_tax();
-//        $val = $this->back_convert($_order_tax, $_woocs_order_rate, $decimals);
-//        if ($selected_currency !== $this->default_currency) {
-//            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-//        }
-        //hpos
-        //update_post_meta($order_id, '_order_tax', $val);
-        //$order->set_total_tax($val);
-        //hpos
         $_order_shipping_tax = $order->get_shipping_tax();
-        $val = $woocs->back_convert($_order_shipping_tax, $_woocs_order_rate, $decimals);
-        if ($selected_currency !== $woocs->default_currency) {
-            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-        }
-        //hpos
-        $order->set_shipping_tax($val);
+        $order->set_shipping_tax($this->recalculateAmount($_order_shipping_tax, $_woocs_order_rate, $selected_currency));
 
-        //hpos
         $_cart_discount = $order->get_discount_total();
-        $val = $woocs->back_convert($_cart_discount, $_woocs_order_rate, $decimals);
-        if ($selected_currency !== $woocs->default_currency) {
-            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-        }
-        //hpos
-        $order->set_discount_tax($val);
+        $order->set_discount_total($this->recalculateAmount($_cart_discount, $_woocs_order_rate, $selected_currency));
 
 //***
         //hpos
-        $line_items = $order->get_items(['line_item', 'shipping', 'tax']);
+        $line_items = $order->get_items(['line_item', 'shipping', 'tax', 'coupon']);
         if (!empty($line_items) AND is_array($line_items)) {
             foreach ($line_items as $v) {
                 //hpos
@@ -160,41 +101,18 @@ class WoocsHpos {
 
                 switch ($order_item_type) {
                     case 'line_item':
-                        //hpos
-                        $amount = $v->get_subtotal();
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_subtotal($val);
 
-                        //hpos
-                        $amount = $v->get_total();
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_total($val);
+                        $subtotal_amount = $v->get_subtotal();
+                        $v->set_subtotal($this->recalculateAmount($subtotal_amount, $_woocs_order_rate, $selected_currency));
 
-                        //hpos
-                        $amount = $v->get_subtotal_tax();
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_subtotal_tax($val);
+                        $total_amount = $v->get_total();
+                        $v->set_total($this->recalculateAmount($total_amount, $_woocs_order_rate, $selected_currency));
 
-                        //hpos
-                        $amount = $v->get_total_tax();
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_total_tax($val);
+                        $subtotal_tax_amount = $v->get_subtotal_tax();
+                        $v->set_subtotal_tax($this->recalculateAmount($subtotal_tax_amount, $_woocs_order_rate, $selected_currency));
+
+                        $total_tax_amount = $v->get_total_tax();
+                        $v->set_total_tax($this->recalculateAmount($total_tax_amount, $_woocs_order_rate, $selected_currency));
 
                         //hpos
                         $_line_tax_data = $v->get_taxes();
@@ -204,18 +122,12 @@ class WoocsHpos {
                                     if (is_array($values)) {
                                         foreach ($values as $k => $value) {
                                             if (is_numeric($value)) {
-                                                $_line_tax_data[$key][$k] = $woocs->back_convert($value, $_woocs_order_rate, $decimals);
-                                                if ($selected_currency !== $woocs->default_currency) {
-                                                    $_line_tax_data[$key][$k] = floatval($_line_tax_data[$key][$k]) * floatval($currencies[$selected_currency]['rate']);
-                                                }
+												$_line_tax_data[$key][$k]= $this->recalculateAmount($value, $_woocs_order_rate, $selected_currency);
                                             }
                                         }
                                     } else {
                                         if (is_numeric($values)) {
-                                            $_line_tax_data[$key] = $woocs->back_convert($values, $_woocs_order_rate, $decimals);
-                                            if ($selected_currency !== $woocs->default_currency) {
-                                                $_line_tax_data[$key] = floatval($_line_tax_data[$key]) * floatval($currencies[$selected_currency]['rate']);
-                                            }
+											$_line_tax_data[$key] = $this->recalculateAmount($values, $_woocs_order_rate, $selected_currency);
                                         }
                                     }
                                 }
@@ -228,15 +140,9 @@ class WoocsHpos {
 
                     case 'shipping':
 
-                        //hpos
-                        $amount = $v->get_total();
-
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_total($val);
+                        $total_amount = $v->get_total();
+                        $v->set_total($this->recalculateAmount($total_amount, $_woocs_order_rate, $selected_currency));
+						
                         //hpos
                         $taxes = $v->get_taxes();
                         if (!empty($taxes) AND is_array($taxes)) {
@@ -245,18 +151,12 @@ class WoocsHpos {
                                     if (is_array($values)) {
                                         foreach ($values as $k => $value) {
                                             if (is_numeric($value)) {
-                                                $taxes[$key][$k] = $woocs->back_convert($value, $_woocs_order_rate, $decimals);
-                                                if ($selected_currency !== $woocs->default_currency) {
-                                                    $taxes[$key][$k] = floatval($taxes[$key][$k]) * floatval($currencies[$selected_currency]['rate']);
-                                                }
+												$taxes[$key][$k] = $this->recalculateAmount($value, $_woocs_order_rate, $selected_currency);
                                             }
                                         }
                                     } else {
                                         if (is_numeric($values)) {
-                                            $taxes[$key] = $woocs->back_convert($values, $_woocs_order_rate, $decimals);
-                                            if ($selected_currency !== $woocs->default_currency) {
-                                                $taxes[$key] = floatval($taxes[$key]) * floatval($currencies[$selected_currency]['rate']);
-                                            }
+											$taxes[$key] = $this->recalculateAmount($values, $_woocs_order_rate, $selected_currency);
                                         }
                                     }
                                 }
@@ -267,25 +167,23 @@ class WoocsHpos {
                         break;
 
                     case 'tax':
-                        //hpos
-                        $amount = $v->get_tax_total();
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, 3);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_tax_total($val);
 
-                        //hpos
-                        $amount = $v->get_shipping_tax_total();
-                        $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                        if ($selected_currency !== $woocs->default_currency) {
-                            $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                        }
-                        //hpos
-                        $v->set_shipping_tax_total($val);
+                        $tax_total_amount = $v->get_tax_total();
+                        $v->set_tax_total($this->recalculateAmount($tax_total_amount, $_woocs_order_rate, $selected_currency));
+
+                        $shipping_tax_total_amount = $v->get_shipping_tax_total();
+                        $v->set_shipping_tax_total($this->recalculateAmount($shipping_tax_total_amount, $_woocs_order_rate, $selected_currency));
 
                         break;
+						
+					case 'coupon':
+						
+						$coupon_discount = $v->get_discount(); // Discount amount
+						$v->set_discount($this->recalculateAmount($coupon_discount, $_woocs_order_rate, $selected_currency));
+						
+						
+						$coupon_discount_tax  = $v->get_discount_tax();	
+						$v->set_discount_tax($this->recalculateAmount($coupon_discount_tax, $_woocs_order_rate, $selected_currency));						
 
                     default:
                         break;
@@ -308,28 +206,41 @@ class WoocsHpos {
                     $post_id = $refund->id;
                 }
 
-                //hpos
                 $amount = $refund->get_amount();
-                $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                if ($selected_currency !== $woocs->default_currency) {
-                    $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                }
-                //hpos
-                $refund->set_amount($val);
+                $refund->set_amount($this->recalculateAmount($amount, $_woocs_order_rate, $selected_currency));
 
-                //hpos
                 $amount = $refund->get_total();
-                $val = $woocs->back_convert($amount, $_woocs_order_rate, $decimals);
-                if ($selected_currency !== $woocs->default_currency) {
-                    $val = floatval($val) * floatval($currencies[$selected_currency]['rate']);
-                }
-                //hpos
-                $refund->set_total($val);
+                $refund->set_total($this->recalculateAmount($amount, $_woocs_order_rate, $selected_currency));
+				
                 $refund->set_currency($selected_currency);
                 $refund->save();
             }
         }
         $order->save();
     }
+	
+	public function recalculateAmount($amount, $current_order_rate, $currency_to) {
+		
+		$decimals = $this->woocs->get_currency_price_num_decimals($currency_to, $this->woocs->price_num_decimals);
+		$val = $this->woocs->back_convert($amount, $current_order_rate, $decimals);
+		$currencies = $this->woocs->get_currencies();
+		
+		if ($currency_to !== $this->woocs->default_currency) {
+			$val = floatval($val) * floatval($currencies[$currency_to]['rate']);
+		}	
+		
+		return $val;
+	}
 
+	public function updateMetaData( $order, $currency_to ){
+		
+        $currencies = $this->woocs->get_currencies();
+
+        $order->set_currency( $currency_to );
+        $order->update_meta_data('_woocs_order_currency', $currency_to);
+        $order->update_meta_data('_woocs_order_base_currency', $this->woocs->default_currency);
+        $order->update_meta_data('_woocs_order_rate', floatval($currencies[$currency_to]['rate']));
+        $order->update_meta_data('_woocs_order_currency_changed_mannualy', time());
+	}
+	
 }

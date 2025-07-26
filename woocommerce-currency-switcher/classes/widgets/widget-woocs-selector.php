@@ -1,5 +1,4 @@
-<?php if (!defined('ABSPATH')) die('No direct access allowed'); ?>
-<?php
+<?php if (!defined('ABSPATH')) die('No direct access allowed'); 
 
 class WOOCS_SELECTOR extends WP_Widget {
 

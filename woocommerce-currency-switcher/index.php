@@ -5,16 +5,16 @@
   Plugin URI: https://currency-switcher.com/
   Description: Currency Switcher for WooCommerce that allows to the visitors and customers on your woocommerce store site switch currencies and optionally apply selected currency on checkout
   Author: realmag777
-  Version: 1.4.2.2
+  Version: 1.4.3.1
   Requires at least: WP 4.9.0
-  Tested up to: WP 6.6
+  Tested up to: WP 6.8
   Requires PHP: 7.4
   Text Domain: woocommerce-currency-switcher
   Domain Path: /languages
   Forum URI: https://pluginus.net/support/forum/woocs-woocommerce-currency-switcher-multi-currency-and-multi-pay-for-woocommerce/
   Author URI: https://pluginus.net/
   WC requires at least: 6.0
-  WC tested up to: 9.3
+  WC tested up to: 10.0
  */
 
 if (!defined('ABSPATH')) {
@@ -64,7 +64,7 @@ if (defined('DOING_AJAX')) {
     }
 }
 
-define('WOOCS_VERSION', '1.4.2.2');
+define('WOOCS_VERSION', '1.4.3.1');
 //define('WOOCS_VERSION', uniqid('woocs-'));//for dev test purposes to reset browser cache
 define('WOOCS_MIN_WOOCOMMERCE', '6.0');
 define('WOOCS_PATH', plugin_dir_path(__FILE__));
@@ -88,7 +88,7 @@ include_once WOOCS_PATH . 'classes/woocs_hpos.php';
 
 include_once WOOCS_PATH . 'classes/world_currencies.php';
 
-//13-09-2024
+//25-07-2025
 class WOOCS_STARTER {
 
     private $default_woo_version = 6.0;
@@ -164,6 +164,7 @@ class WOOCS_STARTER {
             return $this->_woocs;
         }
 
+		include_once WOOCS_PATH . 'classes/Rates/ExchangeRateLimiter.php'; 
         include_once WOOCS_PATH . 'classes/woocs.php'; //woocs_after_33.php
         include_once WOOCS_PATH . 'classes/fixed/fixed_coupon.php';
         include_once WOOCS_PATH . 'classes/fixed/fixed_shipping.php';

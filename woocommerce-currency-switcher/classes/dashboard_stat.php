@@ -60,7 +60,8 @@ class woocs_woo_stat {
                 $format,
                 array('%d')
         );
-        update_post_meta($order_id, 'woocs_order_stat_recalculated', true);
+		$order->update_meta_data('woocs_order_stat_recalculated', true);
+        
     }
 
     public function recalculate_all_stats() {
